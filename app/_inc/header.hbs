@@ -1,0 +1,14 @@
+<header class="site-header">
+    <a class="site-title" href="{{ site.baseurl }}/">({shakyShane.com})</a>
+    <nav class="site-nav">
+        {{#each site.navigation}}
+            {{#current this.url}}
+                <a href="{{this.url}}" class="active">{{this.title}}</a>
+            {{else}}
+                <a href="{{this.url}}">{{this.title}}</a>
+            {{/current}}
+        {{/each}}
+    </nav>
+</header>
+
+

@@ -1,0 +1,18 @@
+title: shakyshane.com
+email: "shakyshane@gmail.com"
+description: Building things with Javascript.
+baseurl: ""
+url: "http://shakyhane.com"
+twitter_username: shaneosbourne
+github_username: shakyshane
+github:
+  url: "http://github.com/shakyShane"
+  username: "shakyshane"
+css:
+  dev: /css/main.css
+  production: main.min-d106a42e.css
+navigation:
+  - title: "Posts"
+    url: "/"
+  - title: "Projects"
+    url: "/projects"
