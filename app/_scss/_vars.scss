@@ -1,12 +1,4 @@
 /**
- * VARIABLES
- */
-
-/*================================================================================
-PALETTE
-================================================================================*/
-
-/**
  * Brand
  */
 $red: #da4453;//#f33;
@@ -15,6 +7,7 @@ $yellow: #e9ac00;
 $teal: #256b8d;//#009882;#5fb342
 $bg: #da4453;
 $lime: #D3ED13;
+$header-bg: #fbfbfb;
 
 
 /**
@@ -24,7 +17,7 @@ $white: #fff;
 $black: #000;
 $grey-dk: lighten($black, 10%); // 1a1a1a
 $grey: lighten($black, 20%); // 333333
-$grey-lt: #f1f1f1; // 666666
+$grey-lt: lighten($grey, 40%); // 666666
 $silver-dk: lighten($black, 60%); // 999999
 $silver: lighten($black, 80%); // cccccc
 $silver-lt: lighten($black, 90%); // e6e6e6
@@ -48,7 +41,7 @@ TYPOGRAPHY
 
 $sans: "Open Sans",sans-serif;
 $serif: Georgia, serif;
-$mono: Consolas, Monaco, monospace;
+$mono: monospace;
 
 
 /**
@@ -78,7 +71,7 @@ $h6-size: 16px;
 /**
  * Fixed width
  */
-$mono-size: 14px;
+$mono-size: 16px;
 $mono-line-height: $base-line-height;
 $mono-font-family: $mono;
 

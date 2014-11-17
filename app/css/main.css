@@ -1,13 +1,4 @@
 /**
- * Project variables
- */
-/**
- * VARIABLES
- */
-/*================================================================================
-PALETTE
-================================================================================*/
-/**
  * Brand
  */
 /**
@@ -42,26 +33,6 @@ LAYOUT
  */
 /**
  * Grids
- */
-.clearfix, .nav, .nav--inline, .nav--float, .container {
-  zoom: 1; }
-  .clearfix:before, .nav:before, .nav--inline:before, .nav--float:before, .container:before, .clearfix:after, .nav:after, .nav--inline:after, .nav--float:after, .container:after {
-    content: "";
-    display: table; }
-  .clearfix:after, .nav:after, .nav--inline:after, .nav--float:after, .container:after {
-    clear: both; }
-
-/**
- * Output media query block
- *
-   `@include media-query(min, 640px);`
- *
- */
-/**
- * Output font size using rem and px fallback
- *
-   `@include font-size(10px);`
- *
  */
 /*! normalize.css v3.0.1 | MIT License | git.io/normalize */
 /**
@@ -381,49 +352,25 @@ table {
 td, th {
   padding: 0; }
 
-/**
- * RESET
- */
-/**
-
-    */
 *, *:before, *:after {
   box-sizing: border-box; }
 
-/**
- * The usual...
- */
 h1, h2, h3, h4, h5, h6, p, blockquote, pre, dl, dd, ol, ul, form, fieldset, legend, table, th, td, caption, hr {
   margin: 0;
   padding: 0; }
 
-/**
- * Give a help cursor to elements that give extra info on `:hover`.
- */
 abbr[title], dfn[title] {
   cursor: help; }
 
-/**
- * Remove underlines from potentially troublesome elements.
- */
 a, u, ins {
   text-decoration: none; }
 
-/**
- * Apply faux underline via `border-bottom`.
- */
 ins {
   border-bottom: 1px solid; }
 
-/**
-
- */
 img {
   font-style: italic; }
 
-/**
- * Give form elements some cursor interactions...
- */
 label, input, textarea, button, select, option {
   cursor: pointer; }
 
@@ -513,80 +460,6 @@ table tbody tr:nth-child(odd) {
   background: #fafafa; }
 
 /**
- * Inline using floats
- */
-.nav, .nav--inline, .nav--float {
-  margin-left: 0;
-  list-style: none; }
-  .nav > li > a, .nav > li > .nav--inline, .nav > li > .nav--float {
-    display: block; }
-  .nav > li.active > a, .nav > li.active > .nav--inline, .nav > li.active > .nav--float {
-    cursor: default; }
-
-/**
- * Horizontal using inline-block
- */
-.nav--inline > li {
-  display: inline-block; }
-  .nav--inline > li > a {
-    display: inline-block; }
-
-/**
- * Horizontal using float
- */
-.nav--float > li {
-  float: left; }
-
-.button {
-  display: inline-block;
-  border: 0;
-  padding: 12px 24px;
-  width: auto;
-  vertical-align: middle;
-  background: #cccccc;
-  color: #256b8d;
-  font-weight: bold;
-  font-size: 16px;
-  font-size: 1rem;
-  line-height: 1;
-  text-align: center;
-  cursor: pointer;
-  border-radius: 3px; }
-  .button:hover, .button:focus {
-    background: #cccccc;
-    color: #000;
-    text-decoration: none; }
-  .button:active {
-    background: #000;
-    color: #fff; }
-  .button + .button, .button + a {
-    margin-left: 12px; }
-
-.button--primary {
-  background: #da4453;
-  color: #fff; }
-  .button--primary:hover, .button--primary:focus {
-    background: #de5967;
-    color: #fff; }
-  .button--primary:active {
-    background: #c42737;
-    color: #fff; }
-
-.button--secondary {
-  background: blue;
-  color: #fff; }
-
-.button--alt {
-  background: orange;
-  color: #fff; }
-
-/**
- * VARIABLES
- */
-/*================================================================================
-PALETTE
-================================================================================*/
-/**
  * Brand
  */
 /**
@@ -670,6 +543,37 @@ h6, .h6 {
   font-size: 16px;
   font-size: 1rem; }
 
+[ss-Nav] {
+  display: block;
+  list-style: none;
+  margin-bottom: 12px; }
+  [ss-Nav] a {
+    display: block; }
+
+[ss-Nav~="inline"] a {
+  display: inline-block;
+  margin-left: 12px; }
+  [ss-Nav~="inline"] a:first-child {
+    margin-left: 0; }
+
+[ss-Nav~="header"] {
+  margin-bottom: 0; }
+  [ss-Nav~="header"] a {
+    text-transform: uppercase;
+    padding: 0.2em 0.4em;
+    margin-left: 10px;
+    border-radius: 3px; }
+    [ss-Nav~="header"] a:first-child {
+      margin-left: 0; }
+    [ss-Nav~="header"] a:hover {
+      color: #000;
+      text-decoration: none; }
+    [ss-Nav~="header"] a.active {
+      color: #999999;
+      cursor: default; }
+      [ss-Nav~="header"] a.active:hover {
+        text-decoration: none; }
+
 a {
   color: #256b8d;
   -webkit-transition: color 0.2s ease;
@@ -680,92 +584,58 @@ a {
   a [class^="icon-"], a [class*=" icon-"] {
     text-decoration: none; }
 
-.site-header {
+[ss-Header] {
   background: #fbfbfb;
   text-align: center;
   padding: 0.5em 0;
-  border-bottom: 1px solid #f4f4f4;
+  border-bottom: 1px solid #eeeeee;
   border-top: 5px solid #bfd610; }
   @media only screen and (min-width: 600px) {
-    .site-header {
+    [ss-Header] {
       padding: 1em 0;
       margin-bottom: 24px; } }
 
-/**
- * Main site title
- */
-.site-title {
+[ss-Title] {
   font-size: 20px;
   font-size: 1.25rem;
   padding: 3px;
   font-weight: bold;
   display: block;
-  color: black; }
+  color: #000; }
   @media only screen and (min-width: 600px) {
-    .site-title {
+    [ss-Title] {
       font-size: 30px;
       font-size: 1.875rem;
       margin-bottom: 12px; } }
-  .site-title:hover {
+  [ss-Title]:hover {
     text-decoration: none;
     color: #256b8d; }
 
-.site-nav {
-  display: block; }
-  .site-nav a {
-    text-transform: uppercase;
-    padding: 0.2em 0.4em;
-    margin-left: 10px;
-    border-radius: 3px; }
-    .site-nav a:first-child {
-      margin-left: 0; }
-    .site-nav a:hover {
-      color: black;
-      text-decoration: none; }
-    .site-nav a.active {
-      color: grey;
-      cursor: default; }
-      .site-nav a.active:hover {
-        text-decoration: none; }
-
-.site-footer {
+[ss-Footer] {
+  background: #fbfbfb;
   margin-top: 24px;
   padding: 24px 0;
-  border-top: 1px solid #f4f4f4;
+  border-top: 1px solid #e2e2e2;
   border-bottom: 5px solid #bfd610;
-  text-align: center;
-  background: #fbfbfb; }
-  .site-footer a {
-    color: black; }
+  text-align: center; }
+  [ss-Footer] a {
+    color: #000; }
 
-.social-links a {
-  color: grey;
+[ss-Social] a {
+  color: #999999;
   padding: 0.5em; }
-  .social-links a:hover {
+  [ss-Social] a:hover {
     text-decoration: none;
-    color: black; }
+    color: #999999; }
 
-.footer-heading {
-  font-size: 20px;
-  font-size: 1.25rem; }
-
-.github-icon-svg, .twitter-icon-svg {
+[ss-Icon] {
   display: inline-block;
   width: 16px;
   height: 16px;
   position: relative;
   top: 3px; }
 
-.wrapper {
-  clear: both;
-  width: 100%;
-  padding-top: 24px;
-  padding-bottom: 24px; }
-
-.wrapper--alt {
-  background: #f2f2f2; }
-
-.container {
+[ss-Content] {
   margin: 0 auto;
   padding-right: 12px;
   padding-left: 12px;
@@ -773,20 +643,17 @@ a {
   max-width: 740px;
   list-style: none; }
   @media only screen and (min-width: 600px) and (max-width: 899px) {
-    .container {
+    [ss-Content] {
       padding-right: 24px;
       padding-left: 24px; } }
   @media only screen and (min-width: 788px) {
-    .container {
+    [ss-Content] {
       width: 740px; } }
 
-/**
- * Base typography styles
- */
 code, samp {
-  font-size: 14px;
-  font-size: 0.875rem;
-  font-family: Consolas, Monaco, monospace;
+  font-size: 16px;
+  font-size: 1rem;
+  font-family: monospace;
   line-height: 1.25;
   padding: 0px 3px;
   border-radius: 3px;
@@ -796,9 +663,6 @@ pre code {
   padding: 0px;
   border: 0; }
 
-/**
- * The wrapper that is provided by the syntax highlighter
- */
 pre {
   background: #FBFBFB;
   padding: 12px;
@@ -821,9 +685,9 @@ pre {
       margin-right: -36px;
       margin-bottom: 48px; } }
 
-.post-content {
+[ss-Post-Content] {
   margin-bottom: 48px; }
-  .post-content ul, .post-content ol {
+  [ss-Post-Content] ul, [ss-Post-Content] ol {
     display: block;
     padding-top: 12px;
     padding-left: 36px;
@@ -832,26 +696,25 @@ pre {
 /**
  * List of posts
  */
-.posts {
+[ss-Nav~="posts"] {
   list-style: none; }
-  .posts li {
-    border-bottom: 1px solid #f1f1f1;
+  [ss-Nav~="posts"] li {
+    border-bottom: 1px solid #f7f7f7;
     padding-top: 1em; }
+  [ss-Nav~="posts"] a {
+    display: block;
+    font-size: 18px;
+    font-size: 1.125rem;
+    text-transform: uppercase;
+    padding: 0.3em 0 1em; }
 
-.post-date {
+[ss-Post-Date] {
   color: grey;
   font-size: 12px;
   font-size: 0.75rem;
   display: block; }
 
-.post-link {
-  display: block;
-  font-size: 18px;
-  font-size: 1.125rem;
-  text-transform: uppercase;
-  padding: 0.3em 0 1em; }
-
-.post-header .meta {
+[ss-Post-Meta] {
   color: #C7C7C7;
   text-transform: uppercase; }
 

@@ -1,51 +1,53 @@
-/**
- * Inline using floats
- */
-.nav {
+[ss-Nav] {
 
-    @extend .clearfix;
-
-    margin-left: 0;
+    display: block;
     list-style: none;
+    margin-bottom: $half-spacing;
 
-    > li {
-
-        + li {
-        }
-        > a {
-            display: block;
-        }
-        &.active > a {
-            cursor: default;
-        }
+    a {
+        display: block;
     }
 }
 
-/**
- * Horizontal using inline-block
- */
-.nav--inline {
-
-    @extend .nav;
-
-    > li {
+[ss-Nav~="inline"] {
+    a {
         display: inline-block;
+        margin-left: $half-spacing;
 
-        > a {
-            display: inline-block;
+        &:first-child {
+            margin-left: 0
         }
     }
 }
 
+[ss-Nav~="header"] {
 
-/**
- * Horizontal using float
- */
-.nav--float {
+    margin-bottom: 0;
 
-    @extend .nav;
+    a {
 
-    > li {
-        float: left;
+        text-transform: uppercase;
+        padding: .2em .4em;
+        margin-left: 10px;
+        border-radius: 3px;
+
+        &:first-child {
+            margin-left: 0;
+        }
+
+        &:hover {
+            color: $black;
+            text-decoration: none;
+        }
+
+        &.active {
+
+            color: $grey-lt;
+            cursor: default;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
     }
 }

@@ -4,11 +4,11 @@ title: "shakyShane.com"
 ---
 
 <h1>Posts</h1>
-<ul class="nav posts">
+<ul ss-Nav="posts">
     {{#posts}}  
     <li>
-        <span class="post-date">{{this.date}}</span>
-        <a class="post-link" href="{{this.url}}">{{this.title}}</a>
+        <span ss-Post-Date>{{this.date}}</span>
+        <a href="{{this.url}}" title="{{this.title}}">{{this.title}}</a>
     </li>
     {{/posts}}
 </ul>

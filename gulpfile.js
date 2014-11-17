@@ -15,8 +15,7 @@ gulp.task("sass", function () {
             browserSync.notify(err.message, 5000);
         })
         .pipe(prefix(["last 5 versions", "> 1%", "ie 8"], { cascade: true }))
-        .pipe(gulp.dest("app/css"))
-        .pipe(browserSync.reload({stream:true}))
+        .pipe(gulp.dest("app/css"));
 });
 
 /**
@@ -34,6 +33,7 @@ gulp.task("browserSync", function () {
                 "/css": "./app/css"
             }
         },
+        files: "app/css/main.css",
         logPrefix: function () {
             return this.compile("{magenta:[Crossbow] ");
         },

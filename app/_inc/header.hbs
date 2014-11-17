@@ -1,6 +1,6 @@
-<header class="site-header">
-    <a class="site-title" href="{{ site.baseurl }}/">({shakyShane.com})</a>
-    <nav class="site-nav">
+<header ss-Header>
+    <a ss-Title href="{{ site.baseurl }}/">({shakyShane.com})</a>
+    <nav ss-Nav="header inline">
         {{#each site.navigation}}
             {{#current this.url}}
                 <a href="{{this.url}}" class="active">{{this.title}}</a>

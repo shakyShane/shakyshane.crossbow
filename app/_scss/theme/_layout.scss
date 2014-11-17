@@ -1,16 +1,4 @@
-.wrapper {
-
-    clear: both;
-    width: 100%;
-    padding-top: $base-spacing;
-    padding-bottom: $base-spacing;
-}
-    .wrapper--alt {
-
-        background: $smoke;
-    }
-
-.container {
+[ss-Content] {
 
     @extend .clearfix;
     margin: 0 auto;
@@ -28,8 +16,4 @@
     @include media-query(min, ($page-width + 2*$base-spacing)) {
         width: $page-width;
     }
-}
-
-.page-content {
-//    background: $grey-lt;
 }

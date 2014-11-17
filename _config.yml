@@ -5,6 +5,10 @@ baseurl: ""
 url: "http://shakyhane.com"
 twitter_username: shaneosbourne
 github_username: shakyshane
+twitter:
+  url: http://twitter.com/shaneosbourne
+  username: shaneosbourne
+
 github:
   url: "http://github.com/shakyShane"
   username: "shakyshane"

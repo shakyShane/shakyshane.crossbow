@@ -1,41 +1,28 @@
-.site-footer {
+[ss-Footer] {
 
+    background: $header-bg;
     margin-top: $base-spacing;
     padding: $base-spacing 0;
-    border-top: 1px solid #f4f4f4;
+    border-top: 1px solid darken($header-bg, 10%);
     border-bottom: 5px solid darken($lime, 5%);
     text-align: center;
-    background: #fbfbfb;
 
     a {
-        color: black;
+        color: $black;
     }
 }
 
-.social-links {
+[ss-Social] {
 
     a {
 
-        color: grey;
+        color: $grey-lt;
         padding: .5em;
 
         &:hover {
 
             text-decoration: none;
-            color: black;
+            color: $grey-lt;
         }
     }
-}
-
-.footer-heading {
-    @include font-size(20px);
-}
-
-.github-icon-svg,
-.twitter-icon-svg {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    position: relative;
-    top: 3px;
 }
