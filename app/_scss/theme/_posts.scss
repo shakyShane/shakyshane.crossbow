@@ -37,6 +37,11 @@
 }
 
 [ss-Post-Meta] {
-    color: #C7C7C7;
+    color: $grey-lt;
     text-transform: uppercase;
+}
+
+[ss-Post-Meta~="lowercase"] {
+    color: $grey-lt;
+    text-transform: none;
 }

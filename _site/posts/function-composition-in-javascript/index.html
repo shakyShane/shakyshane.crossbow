@@ -7,203 +7,199 @@
     <meta name="viewport" content="width=device-width">
     <meta name="description" content="Building things with Javascript.">
     <link rel="canonical" href="/posts/function-composition-in-javascript">
-    
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/main.css">
-    
     <!-- Custom Font -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lora|Oswald' rel='stylesheet' type='text/css'>
+    <!--
+    |
+    |
+    |  shakyShane.com - a static website/blog created using Crossbow.
+    |
+    |  Crossbow is a system for compiling static websites and blogs.
+    |  The Crossbow authors do not agree that the resulting markup from
+    |  a templating system or cms is 'irrelevant' - rather we see it as
+    |  an extremely important aspect of the development workflow and
+    |  have built Crossbow with this idea in mind.
+    |
+    |
+    -->
 </head>
 <body>
     <header ss-Header>
         <a ss-Title href="/">({shakyShane.com})</a>
         <nav ss-Nav="header inline">
-                    <a href="/">Posts</a>
-                    <a href="/projects">Projects</a>
+            <a href="/">Posts</a>
+            <a href="/projects">Projects</a>
         </nav>
     </header>
-    
-    
-    
-        <main>
-    <div ss-Content>
-        <div ss-Post>
-
-    <header ss-Post-Header>
-        <h1>Function Composition in Javascript.</h1>
-        <p ss-Post-Meta></p>
-    </header>
-
-    <article ss-Post-Content>
-        <p>Sounds scary? It isn&#39;t really. Function composition is simply the process of combining two or more existing functions to create a brand new one specific to your needs. Think of it as a function factory.</p>
-<blockquote>
-<p>I use Lo-dash in this post, to follow along, just kick up a JSBin with it loaded.</p>
-</blockquote>
-<h3 id="straight-into-the-code-">Straight into the code.</h3>
-<p>Consider this example where we are just doing a <code>console.log</code> with a welcome message.</p>
+    <main>
+        <div ss-Content>
+            <div ss-Post>
+                <header ss-Post-Header>
+                    <h1>Function Composition in Javascript.</h1>
+                    <p ss-Post-Meta>
+                        November 13, 2013, by shakyShane
+                    </p>
+                </header>
+                <article ss-Post-Content>
+                    <p>Sounds scary? It isn&#39;t really. Function composition is simply the process of combining two or more existing functions to create a brand new one specific to your needs. Think of it as a function factory.</p>
+                    <blockquote>
+                    <p>I use Lo-dash in this post, to follow along, just kick up a JSBin with it loaded.</p>
+                    </blockquote>
+                    <h3 id="straight-into-the-code-">Straight into the code.</h3>
+                    <p>Consider this example where we are just doing a <code>console.log</code> with a welcome message.</p>
 <pre><code class="lang-js"><span class="hljs-comment">// saying hello to Shane</span>
 <span class="hljs-keyword">var</span> name = <span class="hljs-string">"Shane"</span>
 <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Welcome "</span> + name);
 </code></pre>
-<p>To make this re-usable across our project, we can wrap it in a function.</p>
+                    <p>To make this re-usable across our project, we can wrap it in a function.</p>
 <pre><code class="lang-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"Shane"</span>
-
 <span class="hljs-keyword">var</span> printIt = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> </span>{
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"welcome "</span> + name);
 };
-
 printIt(name); <span class="hljs-comment">// Welcome Shane</span>
 </code></pre>
-<p>We have a problem here though - the <code>printIt</code> method is not re-usable right now is it?</p>
+                    <p>We have a problem here though - the <code>printIt</code> method is not re-usable right now is it?</p>
 <pre><code class="lang-js">printIt(<span class="hljs-string">"Goodbye Shane"</span>); <span class="hljs-comment">// Welcome Goodbye Shane</span>
 </code></pre>
-<p>Let&#39;s clean it up so that <code>printIt</code> has a single responsibility.</p>
+                    <p>Let&#39;s clean it up so that <code>printIt</code> has a single responsibility.</p>
 <pre><code class="lang-js"><span class="hljs-keyword">var</span> printIt = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(string)</span> </span>{
     <span class="hljs-built_in">console</span>.log(string);
 };
-
 <span class="hljs-comment">// Now it can print any string.</span>
 printIt(<span class="hljs-string">"Welcome "</span> + name);
 </code></pre>
-<h3 id="improving-">Improving.</h3>
-<p>We made a MINOR improvement there. What happens if we change how we greet our users? Do we have to do a find &amp; replace across the project? No, you just abstract the process of appending a welcome message to another function.</p>
+                    <h3 id="improving-">Improving.</h3>
+                    <p>We made a MINOR improvement there. What happens if we change how we greet our users? Do we have to do a find &amp; replace across the project? No, you just abstract the process of appending a welcome message to another function.</p>
 <pre><code class="lang-js"><span class="hljs-keyword">var</span> welcome = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> </span>{
     <span class="hljs-keyword">return</span> <span class="hljs-string">"Welcome "</span> + name;
 };
 </code></pre>
-<p>Now we have two functions that do one thing each, we can start using them together to build-up to our desired goal. </p>
+                    <p>Now we have two functions that do one thing each, we can start using them together to build-up to our desired goal. </p>
 <pre><code class="lang-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"Shane"</span>;
-
 printIt(welcome(<span class="hljs-string">"Shane"</span>)); <span class="hljs-comment">// Welcome Shane</span>
 </code></pre>
-<h3 id="nice-">Nice.</h3>
-<p>Ok, now if you want to change how you greet people in your app, you just alter the <code>welcome</code> method &amp; you&#39;re done. </p>
-<h3 id="our-first-composed-function">Our first composed function</h3>
-<p>The previous examples were trivial, but enough to get the idea of composition across. Calling one function with the return result of another is a very common need &amp; it can be really useful. </p>
-<p><strong>The problem with the previous example though,</strong> is that it&#39;s already hard to read. Wrapping function calls around function calls can be confusing &amp; hard to follow (especially when the amount increases)! This is where you can use a library like Lo-dash to create <em>compose</em> your own brand-new functions using existing ones. </p>
+                    <h3 id="nice-">Nice.</h3>
+                    <p>Ok, now if you want to change how you greet people in your app, you just alter the <code>welcome</code> method &amp; you&#39;re done. </p>
+                    <h3 id="our-first-composed-function">Our first composed function</h3>
+                    <p>The previous examples were trivial, but enough to get the idea of composition across. Calling one function with the return result of another is a very common need &amp; it can be really useful. </p>
+                    <p><strong>The problem with the previous example though,</strong> is that it&#39;s already hard to read. Wrapping function calls around function calls can be confusing &amp; hard to follow (especially when the amount increases)! This is where you can use a library like Lo-dash to create <em>compose</em> your own brand-new functions using existing ones. </p>
 <pre><code class="lang-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"Shane"</span>;
-
 <span class="hljs-keyword">var</span> printIt = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(string)</span> </span>{
     <span class="hljs-built_in">console</span>.log(string);
 };
-
 <span class="hljs-keyword">var</span> welcome = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> </span>{
     <span class="hljs-keyword">return</span> <span class="hljs-string">"Welcome "</span> + name;
 };
-
 <span class="hljs-comment">// create a new function, using existing ones</span>
 <span class="hljs-keyword">var</span> sayHelloTo = _.compose(printIt, welcome);
-
 <span class="hljs-comment">// cool, we now have a 'composed' function that we can use. </span>
 sayHelloTo(name); <span class="hljs-comment">// Welcome Shane</span>
 </code></pre>
-<p><code>_.compose()</code> takes functions as it&#39;s arguments &amp; returns a new function. Then, when the new function is called (<code>sayHelloTo</code> in our example) each function you passed in is called in order (from right-to-left) with the return value from the previous one. </p>
-<p><strong>Following?</strong> Let&#39;s do a walk through of the cycle to fully understand it. When you call <code>sayHelloTo</code> with <code>name</code> it gets passed as the argument to the last function you gave to _.compose earlier &amp; this happens: </p>
-<p>You call <code>sayHelloTo(name)</code>, then...</p>
-<ol>
-<li><code>welcome(&quot;Shane&quot;)</code> is called, which returns <code>&quot;Welcome Shane&quot;</code>.</li>
-<li>That return value then gets passed to the next function in the list, so this happens</li>
-<li><code>printIt(&quot;Welcome Shane&quot;)</code></li>
-<li>Which will do whatever we told the print function to do.</li>
-</ol>
-<p>See how that works?</p>
-<h3 id="going-further-">Going further.</h3>
-<p>Using tiny, single responsibility functions may seem strange to you. But it&#39;s a very powerful way of programming. Let&#39;s say we no longer want to simply greet someone by name. Instead, we have a user object like this.</p>
+                    <p><code>_.compose()</code> takes functions as it&#39;s arguments &amp; returns a new function. Then, when the new function is called (<code>sayHelloTo</code> in our example) each function you passed in is called in order (from right-to-left) with the return value from the previous one. </p>
+                    <p><strong>Following?</strong> Let&#39;s do a walk through of the cycle to fully understand it. When you call <code>sayHelloTo</code> with <code>name</code> it gets passed as the argument to the last function you gave to _.compose earlier &amp; this happens: </p>
+                    <p>You call <code>sayHelloTo(name)</code>, then...</p>
+                    <ol>
+                    <li><code>welcome(&quot;Shane&quot;)</code> is called, which returns <code>&quot;Welcome Shane&quot;</code>.</li>
+                    <li>That return value then gets passed to the next function in the list, so this happens</li>
+                    <li><code>printIt(&quot;Welcome Shane&quot;)</code></li>
+                    <li>Which will do whatever we told the print function to do.</li>
+                    </ol>
+                    <p>See how that works?</p>
+                    <h3 id="going-further-">Going further.</h3>
+                    <p>Using tiny, single responsibility functions may seem strange to you. But it&#39;s a very powerful way of programming. Let&#39;s say we no longer want to simply greet someone by name. Instead, we have a user object like this.</p>
 <pre><code class="lang-js"><span class="hljs-keyword">var</span> user = {
     id: <span class="hljs-string">"12"</span>,
     name: <span class="hljs-string">"Shane"</span>
 };
 </code></pre>
-<p>Now our <code>sayHelloTo</code> function is not going to work because the <code>welcome</code> part of it is expecting a string… You might be thinking that we could just change the <code>welcome</code> method to accept a user object like this:</p>
+                    <p>Now our <code>sayHelloTo</code> function is not going to work because the <code>welcome</code> part of it is expecting a string… You might be thinking that we could just change the <code>welcome</code> method to accept a user object like this:</p>
 <pre><code class="lang-js"><span class="hljs-comment">// bad!</span>
 <span class="hljs-keyword">var</span> welcome = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(user)</span> </span>{
     <span class="hljs-keyword">return</span> <span class="hljs-string">"Welcome "</span> + user.name;
 };
 </code></pre>
-<p>This is not good idea because now the <code>welcome</code> method knows too much about our implementation. We&#39;ve tied it down to a single use-case &amp; made it hard to re-use.</p>
+                    <p>This is not good idea because now the <code>welcome</code> method knows too much about our implementation. We&#39;ve tied it down to a single use-case &amp; made it hard to re-use.</p>
 <pre><code class="lang-js"><span class="hljs-comment">// can't be used now with a string</span>
 <span class="hljs-keyword">var</span> welcome = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(user)</span> </span>{
     <span class="hljs-keyword">return</span> <span class="hljs-string">"Welcome "</span> + user.name;
 };
-
 welcome(<span class="hljs-string">"Shane"</span>); <span class="hljs-comment">// Welcome undefined</span>
 </code></pre>
-<h3 id="solution-">Solution?</h3>
-<p>So what&#39;s a good way to handle this? Well we need to extract the user&#39;s name before greeting them &amp; since we&#39;re talking about composition here, let&#39;s create another mini-function to resolve the name</p>
+                    <h3 id="solution-">Solution?</h3>
+                    <p>So what&#39;s a good way to handle this? Well we need to extract the user&#39;s name before greeting them &amp; since we&#39;re talking about composition here, let&#39;s create another mini-function to resolve the name</p>
 <pre><code class="lang-js"><span class="hljs-comment">// returns the name property if it exists or the original input</span>
 <span class="hljs-keyword">var</span> getName = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(user)</span> </span>{
     <span class="hljs-keyword">return</span> user.name || user;
 };
 </code></pre>
-<p>We can now add this to our composed function chain so that it&#39;s the first thing called.</p>
+                    <p>We can now add this to our composed function chain so that it&#39;s the first thing called.</p>
 <pre><code class="lang-js"><span class="hljs-keyword">var</span> sayHelloTo = _.compose(printIt, welcome, getName);
 </code></pre>
-<p>Just as before, we now have a new function that has be composed from other small functions &amp; can be used like this:</p>
+                    <p>Just as before, we now have a new function that has be composed from other small functions &amp; can be used like this:</p>
 <pre><code class="lang-js"><span class="hljs-keyword">var</span> user = {
     id: <span class="hljs-string">"12"</span>,
     name: <span class="hljs-string">"Shane"</span>
 };
-
 sayHelloTo(user); <span class="hljs-comment">// Welcome Shane</span>
-
 sayHelloTo(<span class="hljs-string">"Kittie"</span>) <span class="hljs-comment">// Welcome Kittie</span>
 </code></pre>
-<h3 id="benefits">Benefits</h3>
-<p>The cool thing here, is that any time something changes in your app, you can narrow the change down to one of these tiny functions. For example, let&#39;s say there&#39;s an API change &amp; you now need to look for the key <code>username</code> on the user object. Easy - just change the implementation of <code>getName</code> and you&#39;re good to go.</p>
-<h3 id="full-example-">Full example.</h3>
-<p>Here&#39;s the full code from the examples above.</p>
+                    <h3 id="benefits">Benefits</h3>
+                    <p>The cool thing here, is that any time something changes in your app, you can narrow the change down to one of these tiny functions. For example, let&#39;s say there&#39;s an API change &amp; you now need to look for the key <code>username</code> on the user object. Easy - just change the implementation of <code>getName</code> and you&#39;re good to go.</p>
+                    <h3 id="full-example-">Full example.</h3>
+                    <p>Here&#39;s the full code from the examples above.</p>
 <pre><code class="lang-js"><span class="hljs-keyword">var</span> user = {
     id: <span class="hljs-string">"12"</span>,
     name: <span class="hljs-string">"Shane"</span>
 };
-
 <span class="hljs-keyword">var</span> printIt = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(string)</span> </span>{
     <span class="hljs-built_in">console</span>.log(string);
 };
-
 <span class="hljs-keyword">var</span> welcome = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> </span>{
     <span class="hljs-keyword">return</span> <span class="hljs-string">"Welcome "</span> + name;
 };
-
 <span class="hljs-keyword">var</span> getName = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(user)</span> </span>{
     <span class="hljs-keyword">return</span> user.name || user;
 };
-
 <span class="hljs-keyword">var</span> sayHelloTo = _.compose(printIt, welcome, getName);
-
 sayHelloTo(user); <span class="hljs-comment">// Welcome Shane</span>
 </code></pre>
-<h3 id="finally">Finally</h3>
-<p>Just to hammer it home about the benefits of function composition</p>
+                    <h3 id="finally">Finally</h3>
+                    <p>Just to hammer it home about the benefits of function composition</p>
 <pre><code class="lang-js"><span class="hljs-comment">// without composition = hard to read, hard to maintain.</span>
 printIt(welcome(getName(user))); <span class="hljs-comment">// Welcome Shane</span>
-
 <span class="hljs-comment">// with composition - easy to understand, modify &amp; maintain</span>
 <span class="hljs-keyword">var</span> sayHelloTo = _.compose(printIt, welcome, getName);
-
 sayHelloTo(user); <span class="hljs-comment">// Welcome Shane</span>
 </code></pre>
-
-    </article>
-
-    <div id="disqus_thread"></div>
-    <script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'shakyshane'; // required: replace example with your forum shortname
-    
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-</div>
-    </div>
-</main>
+                </article>
+                <footer>
+                    <p ss-Post-Meta="lowercase">
+                        <span>Prev</span>
+                        <a href="/posts/stylus-less-sass-being-efficient-with-extends">Using SASS - Being efficient with @mixin &amp; @extend</a>
+                    </p>
+                    <p ss-Post-Meta="lowercase">
+                        <span>Next</span>
+                        <a href="/posts/making-promises-with-javascript">Making Promises with Javascript</a>
+                    </p>
+                </footer>
+                <div id="disqus_thread"></div>
+                <script type="text/javascript">
+                    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+                    var disqus_shortname = 'shakyshane'; // required: replace example with your forum shortname
+                    /* * * DON'T EDIT BELOW THIS LINE * * */
+                    (function() {
+                        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                </script>
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+        </div>
+    </main>
     <footer ss-Footer>
         <nav ss-Social ss-Nav="footer inline">
             <a href="http://github.com/shakyShane">
@@ -241,7 +237,6 @@ sayHelloTo(user); <span class="hljs-comment">// Welcome Shane</span>
                 <span class="username">shaneosbourne</span>
             </a>
         </nav>
-        
         <p class="text">Building things with Javascript.</p>
     </footer>
 </body>

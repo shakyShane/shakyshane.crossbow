@@ -2,13 +2,11 @@
     <a ss-Title href="{{ site.baseurl }}/">({shakyShane.com})</a>
     <nav ss-Nav="header inline">
         {{#each site.navigation}}
-            {{#current this.url}}
-                <a href="{{this.url}}" class="active">{{this.title}}</a>
-            {{else}}
-                <a href="{{this.url}}">{{this.title}}</a>
-            {{/current}}
+        {{#current this.url}}
+        <a href="{{this.url}}" class="active">{{this.title}}</a>
+        {{else}}
+        <a href="{{this.url}}">{{this.title}}</a>
+        {{/current}}
         {{/each}}
     </nav>
 </header>
-
-

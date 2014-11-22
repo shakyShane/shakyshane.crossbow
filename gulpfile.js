@@ -5,6 +5,7 @@ var htmlInjector = require("bs-html-injector");
 var sass         = require("gulp-sass");
 var prefix       = require("gulp-autoprefixer");
 var minifyCSS    = require("gulp-minify-css");
+var plumber      = require('gulp-plumber');
 
 
 gulp.task("sass", function () {
@@ -22,17 +23,20 @@ gulp.task("sass", function () {
  * Start BrowserSync
  */
 gulp.task("browserSync", function () {
-    //browserSync.use(htmlInjector, {
-    //    logLevel: "debug"
-    //});
+    browserSync.use(htmlInjector, {
+        excludedTags: ["BODY"],
+        logLevel: "debug"
+    });
     browserSync({
         server: {
             baseDir: "_site",
             routes: {
                 "/img": "./app/img",
-                "/css": "./app/css"
+                "/css": "./app/css",
+                "/fonts": "./app/fonts"
             }
         },
+        logLevel: "silent",
         files: "app/css/main.css",
         logPrefix: function () {
             return this.compile("{magenta:[Crossbow] ");
@@ -49,6 +53,7 @@ var blogconfig = {
     logLevel: "debug",
     postUrlFormat: "/posts/:title",
     prettyUrls: true,
+    //prettyMarkup: false,
     cwd: "app"
 };
 
@@ -60,22 +65,22 @@ gulp.task("build-blog", function () {
     return gulp.src([
         "app/**/*.html",
         "app/*.md",
-        "app/_posts/*.{md,markdown}",
+        "app/_posts/*.{md,markdown}"
     ])
         .pipe(coderBlog(blogconfig))
         .pipe(gulp.dest("_site"));
 });
 
 gulp.task("watch", function () {
-    gulp.watch("app/_scss/**/*.scss", ["sass"]);
+    gulp.watch(["app/_scss/**/*.scss", "app/fonts/**/*.scss"], ["sass"]);
     gulp.watch(["app/**/*"], function (file) {
         //console.log("File changed: " + file.path);
         return gulp.src(file.path)
             .pipe(coderBlog(blogconfig))
             .pipe(gulp.dest("_site"))
             .on("end", function () {
-                browserSync.reload();
-                //htmlInjector();
+                //browserSync.reload();
+                htmlInjector();
             }).on("error", function () {
                 console.log("ERROR");
             })

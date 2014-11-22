@@ -7,48 +7,55 @@
     <meta name="viewport" content="width=device-width">
     <meta name="description" content="Building things with Javascript.">
     <link rel="canonical" href="/posts/browser-sync-plus-grunt">
-    
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/main.css">
-    
     <!-- Custom Font -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lora|Oswald' rel='stylesheet' type='text/css'>
+    <!--
+    |
+    |
+    |  shakyShane.com - a static website/blog created using Crossbow.
+    |
+    |  Crossbow is a system for compiling static websites and blogs.
+    |  The Crossbow authors do not agree that the resulting markup from
+    |  a templating system or cms is 'irrelevant' - rather we see it as
+    |  an extremely important aspect of the development workflow and
+    |  have built Crossbow with this idea in mind.
+    |
+    |
+    -->
 </head>
 <body>
     <header ss-Header>
         <a ss-Title href="/">({shakyShane.com})</a>
         <nav ss-Nav="header inline">
-                    <a href="/">Posts</a>
-                    <a href="/projects">Projects</a>
+            <a href="/">Posts</a>
+            <a href="/projects">Projects</a>
         </nav>
     </header>
-    
-    
-    
-        <main>
-    <div ss-Content>
-        <div ss-Post>
-
-    <header ss-Post-Header>
-        <h1>BrowserSync + Grunt - a common problem addressed</h1>
-        <p ss-Post-Meta></p>
-    </header>
-
-    <article ss-Post-Content>
-        <p>Believe it or not, back in the day BrowserSync was actually a Grunt-only plugin. Being an in-experienced
-developer who was just getting to grips with front-end tooling, I really didn&#39;t know any better. </p>
-<p>Now a year later, the <code>grunt-browser-sync</code> package has been reduced to a simple wrapper for the main module.</p>
-<h2 id="elsewhere">Elsewhere</h2>
-<p>... have you seen API or Gulp examples that look something like this? </p>
+    <main>
+        <div ss-Content>
+            <div ss-Post>
+                <header ss-Post-Header>
+                    <h1>BrowserSync + Grunt - a common problem addressed</h1>
+                    <p ss-Post-Meta>
+                        August 24, 2014, by shakyShane
+                    </p>
+                </header>
+                <article ss-Post-Content>
+                    <p>Believe it or not, back in the day BrowserSync was actually a Grunt-only plugin. Being an in-experienced
+                    developer who was just getting to grips with front-end tooling, I really didn&#39;t know any better. </p>
+                    <p>Now a year later, the <code>grunt-browser-sync</code> package has been reduced to a simple wrapper for the main module.</p>
+                    <h2 id="elsewhere">Elsewhere</h2>
+                    <p>... have you seen API or Gulp examples that look something like this? </p>
 <pre><code class="lang-js"><span class="hljs-keyword">var</span> browserSync = <span class="hljs-built_in">require</span>(<span class="hljs-string">"browser-sync"</span>);
-
 browserSync({
     server: <span class="hljs-string">"./"</span>
 })
 </code></pre>
-<p><strong>... well behind the scenes, that&#39;s almost exactly what the Grunt plugin does!</strong></p>
-<p><br/></p>
-<p>So, in a Gruntfile.js, when you see the following configuration...</p>
+                    <p><strong>... well behind the scenes, that&#39;s almost exactly what the Grunt plugin does!</strong></p>
+                    <p><br/></p>
+                    <p>So, in a Gruntfile.js, when you see the following configuration...</p>
 <pre><code class="lang-js"><span class="hljs-comment">// Config snippet from a Gruntfile.js</span>
 browserSync: {
     bsFiles: {
@@ -61,43 +68,41 @@ browserSync: {
     }
 }
 </code></pre>
-<p>... it&#39;s actually being converted into this, which is exactly the same as just using the module directly...</p>
+                    <p>... it&#39;s actually being converted into this, which is exactly the same as just using the module directly...</p>
 <pre><code class="lang-js"><span class="hljs-comment">// What actually happens in the plugin.</span>
 <span class="hljs-keyword">var</span> browserSync = <span class="hljs-built_in">require</span>(<span class="hljs-string">"browser-sync"</span>);
-
 browserSync({
     files: <span class="hljs-string">"assets/css/*.css"</span>
     server: <span class="hljs-string">"./"</span>
 })
 </code></pre>
-<h2 id="in-the-know-">In the know...</h2>
-<p>Now that you know what really happens in the plugin, we can look at ways 
-to solve a common Grunt + BrowserSync problem.</p>
-<p>By far, the biggest issue I&#39;ve had to deal with is regarding multiple tasks that write to a css file &amp; getting 
-the injection working correctly.</p>
-<p>Let&#39;s look at a simple example - suppose you have SASS &amp; Autoprefixer running to compile your CSS. You want 
-browserSync to inject the CSS file, but only AFTER both tasks are complete...</p>
+                    <h2 id="in-the-know-">In the know...</h2>
+                    <p>Now that you know what really happens in the plugin, we can look at ways 
+                    to solve a common Grunt + BrowserSync problem.</p>
+                    <p>By far, the biggest issue I&#39;ve had to deal with is regarding multiple tasks that write to a css file &amp; getting 
+                    the injection working correctly.</p>
+                    <p>Let&#39;s look at a simple example - suppose you have SASS &amp; Autoprefixer running to compile your CSS. You want 
+                    browserSync to inject the CSS file, but only AFTER both tasks are complete...</p>
 <pre><code class="lang-bash">// Desired workflow
 you change a file -&gt; SASS compiles -&gt; Autoprefixer runs -&gt; BrowserSync injects the CSS
 </code></pre>
-<p>But here&#39;s the problem, if you have BrowserSync watching your output CSS directory for changes and the SASS &amp; 
-Autoprefixer tasks are BOTH setup to write to that same directory, then things get confusing because BrowserSync will 
-see changes from the first SASS task &amp; attempt to inject the CSS too soon...</p>
+                    <p>But here&#39;s the problem, if you have BrowserSync watching your output CSS directory for changes and the SASS &amp; 
+                    Autoprefixer tasks are BOTH setup to write to that same directory, then things get confusing because BrowserSync will 
+                    see changes from the first SASS task &amp; attempt to inject the CSS too soon...</p>
 <pre><code class="lang-bash">// What actually happens, incorrect order
 you change a file -&gt; SASS compiles -&gt; BrowserSync injects the CSS -&gt; Autoprefixer runs
 </code></pre>
-<h3 id="solution">Solution</h3>
-<p>If you think about it, all we really want is the ability to trigger CSS injecting at a specific time (after x tasks have finished)
-&amp; you can actually do that, but it requires you to ditch the <code>grunt-browser-sync</code> plugin...</p>
-<p>An overview of the changes we&#39;ll make.</p>
-<ul>
-<li>Don&#39;t watch CSS files directly with BrowserSync</li>
-<li>Use the <code>browser-sync</code> module directly, instead of the Grunt Plugin.</li>
-<li>Define custom tasks for starting BrowserSync + injecting CSS.</li>
-</ul>
+                    <h3 id="solution">Solution</h3>
+                    <p>If you think about it, all we really want is the ability to trigger CSS injecting at a specific time (after x tasks have finished)
+                    &amp; you can actually do that, but it requires you to ditch the <code>grunt-browser-sync</code> plugin...</p>
+                    <p>An overview of the changes we&#39;ll make.</p>
+                    <ul>
+                    <li>Don&#39;t watch CSS files directly with BrowserSync</li>
+                    <li>Use the <code>browser-sync</code> module directly, instead of the Grunt Plugin.</li>
+                    <li>Define custom tasks for starting BrowserSync + injecting CSS.</li>
+                    </ul>
 <pre><code class="lang-js">
 <span class="hljs-keyword">var</span> browserSync = <span class="hljs-built_in">require</span>(<span class="hljs-string">"browser-sync"</span>);
-
 <span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(grunt)</span> </span>{
     grunt.initConfig({
         sass: {
@@ -127,7 +132,6 @@ you change a file -&gt; SASS compiles -&gt; BrowserSync injects the CSS -&gt; Au
             }
         }
     });
-
     <span class="hljs-comment">/**
      * Init BrowserSync manually
      */</span>
@@ -139,31 +143,28 @@ you change a file -&gt; SASS compiles -&gt; BrowserSync injects the CSS -&gt; Au
             done();
         });
     });
-
     <span class="hljs-comment">/**
      * Inject CSS
      */</span>
     grunt.registerTask(<span class="hljs-string">"bs-inject"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
         browserSync.reload([<span class="hljs-string">"styles.css"</span>, <span class="hljs-string">"other.css"</span>]);
     });
-
     grunt.loadNpmTasks(<span class="hljs-string">'grunt-autoprefixer'</span>);
     grunt.loadNpmTasks(<span class="hljs-string">'grunt-sass'</span>);
-
     <span class="hljs-comment">// Launch Browser-sync &amp; watch files</span>
     grunt.registerTask(<span class="hljs-string">'watch'</span>, [<span class="hljs-string">'bs-init'</span>, <span class="hljs-string">'watch'</span>]);
 };
 </code></pre>
-<p>Notice the <strong>watch</strong> task? we are adding <code>bs-inject</code> as the last task to run following changes to <code>scss</code> files. 
- This will ensure that CSS injection is only done when both SASS &amp; Autoprefixer are done writing files.</p>
-<p>It&#39;s a much more reliable technique, because now you can control when CSS injecting takes place simply by
-changing where <code>bs-inject</code> is in the task list.</p>
-<h3 id="note-">Note:</h3>
-<p>You&#39;ll need the <code>spawn: false</code> option on your watch tasks, and inside the <code>bs-inject</code> task, you&#39;ll need to 
-ensure that you specify CSS files that actually exist in your webpage.</p>
-<hr>
-<h3 id="options-">Options.</h3>
-<p>Any options you previously had in your old config will work perfectly inside your new <code>bs-init</code> task.</p>
+                    <p>Notice the <strong>watch</strong> task? we are adding <code>bs-inject</code> as the last task to run following changes to <code>scss</code> files. 
+                     This will ensure that CSS injection is only done when both SASS &amp; Autoprefixer are done writing files.</p>
+                    <p>It&#39;s a much more reliable technique, because now you can control when CSS injecting takes place simply by
+                    changing where <code>bs-inject</code> is in the task list.</p>
+                    <h3 id="note-">Note:</h3>
+                    <p>You&#39;ll need the <code>spawn: false</code> option on your watch tasks, and inside the <code>bs-inject</code> task, you&#39;ll need to 
+                    ensure that you specify CSS files that actually exist in your webpage.</p>
+                    <hr>
+                    <h3 id="options-">Options.</h3>
+                    <p>Any options you previously had in your old config will work perfectly inside your new <code>bs-init</code> task.</p>
 <pre><code class="lang-js"><span class="hljs-comment">// Still watch files as you did before.</span>
 grunt.registerTask(<span class="hljs-string">"bs-init"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
     <span class="hljs-keyword">var</span> done = <span class="hljs-keyword">this</span>.async();
@@ -180,33 +181,37 @@ grunt.registerTask(<span class="hljs-string">"bs-init"</span>, <span class="hljs
     });
 });
 </code></pre>
-<h3 id="bottom-line">Bottom line</h3>
-<p>The Grunt plugin for BrowserSync is just a simple wrapper, if it&#39;s working great for you already, then there&#39;s 
-no need to switch. But if you&#39;re having any types of problems like the one mentioned above, you should really consider
-just using the module directly.</p>
-<p><br/>
-<br/></p>
-
-    </article>
-
-    <div id="disqus_thread"></div>
-    <script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'shakyshane'; // required: replace example with your forum shortname
-    
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-</div>
-    </div>
-</main>
+                    <h3 id="bottom-line">Bottom line</h3>
+                    <p>The Grunt plugin for BrowserSync is just a simple wrapper, if it&#39;s working great for you already, then there&#39;s 
+                    no need to switch. But if you&#39;re having any types of problems like the one mentioned above, you should really consider
+                    just using the module directly.</p>
+                </article>
+                <footer>
+                    <p ss-Post-Meta="lowercase">
+                        <span>Prev</span>
+                        <a href="/posts/browser-sync-snippet">BrowserSync snippet injector plugin.</a>
+                    </p>
+                    <p ss-Post-Meta="lowercase">
+                        <span>Next</span>
+                        <a href="/posts/simple-network-requests-in-selenium">Get a list of network requests in Selenium</a>
+                    </p>
+                </footer>
+                <div id="disqus_thread"></div>
+                <script type="text/javascript">
+                    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+                    var disqus_shortname = 'shakyshane'; // required: replace example with your forum shortname
+                    /* * * DON'T EDIT BELOW THIS LINE * * */
+                    (function() {
+                        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                </script>
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+        </div>
+    </main>
     <footer ss-Footer>
         <nav ss-Social ss-Nav="footer inline">
             <a href="http://github.com/shakyShane">
@@ -244,7 +249,6 @@ just using the module directly.</p>
                 <span class="username">shaneosbourne</span>
             </a>
         </nav>
-        
         <p class="text">Building things with Javascript.</p>
     </footer>
 </body>

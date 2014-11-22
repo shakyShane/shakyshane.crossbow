@@ -5,7 +5,6 @@ date:   2014-08-24 10:21:39
 categories: javascript nodejs browser-sync
 ---
 
-   
 Believe it or not, back in the day BrowserSync was actually a Grunt-only plugin. Being an in-experienced
 developer who was just getting to grips with front-end tooling, I really didn't know any better. 
 
@@ -188,5 +187,3 @@ The Grunt plugin for BrowserSync is just a simple wrapper, if it's working great
 no need to switch. But if you're having any types of problems like the one mentioned above, you should really consider
 just using the module directly.
 
-<br/>
-<br/>

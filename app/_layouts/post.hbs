@@ -5,12 +5,29 @@ layout: "default.hbs"
 
     <header ss-Post-Header>
         <h1>{{ page.title }}</h1>
-        <p ss-Post-Meta></p>
+        <p ss-Post-Meta>
+            {{ post.date }}, by {{ site.author.name }}
+        </p>
     </header>
 
     <article ss-Post-Content>
         {{ content }}
     </article>
+
+    <footer>
+        {{#if post.prev}}
+        <p ss-Post-Meta="lowercase">
+            <span>Prev</span>
+            <a href="{{post.prev.url}}">{{post.prev.title}}</a>
+        </p>
+        {{/if}}
+        {{#if post.next}}
+        <p ss-Post-Meta="lowercase">
+            <span>Next</span>
+            <a href="{{post.next.url}}">{{post.next.title}}</a>
+        </p>
+        {{/if}}
+    </footer>
 
     {{ inc src="_inc/discus.hbs" }}
 

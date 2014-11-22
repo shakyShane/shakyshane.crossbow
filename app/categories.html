@@ -1,0 +1,17 @@
+---
+layout: "page.hbs"
+title: "Categories"
+---
+
+<h1>Categories</h1>
+
+{{#each categories}}
+<p>Name: <b>{{this.title}}</b></p>
+<ul ss-Nav>
+    {{#each this.items}}
+    <li>
+        <a href="{{this.url}}">{{this.title}}</a>
+    </li>
+    {{/each}}
+</ul>
+{{/each}}

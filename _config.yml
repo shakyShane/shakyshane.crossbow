@@ -3,6 +3,8 @@ email: "shakyshane@gmail.com"
 description: Building things with Javascript.
 baseurl: ""
 url: "http://shakyhane.com"
+author:
+  name: "shakyShane"
 twitter_username: shaneosbourne
 github_username: shakyshane
 twitter:

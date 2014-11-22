@@ -7,95 +7,96 @@
     <meta name="viewport" content="width=device-width">
     <meta name="description" content="Building things with Javascript.">
     <link rel="canonical" href="/posts/beginners-guide-to-testing-nodejs-servers">
-    
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/main.css">
-    
     <!-- Custom Font -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lora|Oswald' rel='stylesheet' type='text/css'>
+    <!--
+    |
+    |
+    |  shakyShane.com - a static website/blog created using Crossbow.
+    |
+    |  Crossbow is a system for compiling static websites and blogs.
+    |  The Crossbow authors do not agree that the resulting markup from
+    |  a templating system or cms is 'irrelevant' - rather we see it as
+    |  an extremely important aspect of the development workflow and
+    |  have built Crossbow with this idea in mind.
+    |
+    |
+    -->
 </head>
 <body>
     <header ss-Header>
         <a ss-Title href="/">({shakyShane.com})</a>
         <nav ss-Nav="header inline">
-                    <a href="/">Posts</a>
-                    <a href="/projects">Projects</a>
+            <a href="/">Posts</a>
+            <a href="/projects">Projects</a>
         </nav>
     </header>
-    
-    
-    
-        <main>
-    <div ss-Content>
-        <div ss-Post>
-
-    <header ss-Post-Header>
-        <h1>Beginners guide to testing NodeJS Servers</h1>
-        <p ss-Post-Meta></p>
-    </header>
-
-    <article ss-Post-Content>
-        <p>The following is a gentle introduction into the world of unit testing NodeJS servers. We&#39;ll look at the absolute basics here - so if you&#39;ve never written unit tests before &amp; you&#39;ve <em>been meaning to learn how</em> - then this is the blog post for you.</p>
-<h2 id="setup">Setup</h2>
-<p>I encourage you to follow along with these examples to ensure you get the most out of it. It couldn&#39;t be easier - only three files and a couple of things to install.</p>
-<ul>
-<li>Install Mocha globally with <code>npm install -g mocha</code>.</li>
-<li>Then in a new directory, run <code>npm install connect chai supertest</code></li>
-<li>Create a file called <code>myapp.js</code></li>
-<li>Create a sub directory called <code>app</code> with a <code>index.html</code> file inside.</li>
-<li>Create a sub directory called <code>test</code> with a file inside that called <code>myapp.test.js</code></li>
-</ul>
-<p>Your file/directory structure should now look like this:</p>
+    <main>
+        <div ss-Content>
+            <div ss-Post>
+                <header ss-Post-Header>
+                    <h1>Beginners guide to testing NodeJS Servers</h1>
+                    <p ss-Post-Meta>
+                        March 14, 2014, by shakyShane
+                    </p>
+                </header>
+                <article ss-Post-Content>
+                    <p>The following is a gentle introduction into the world of unit testing NodeJS servers. We&#39;ll look at the absolute basics here - so if you&#39;ve never written unit tests before &amp; you&#39;ve <em>been meaning to learn how</em> - then this is the blog post for you.</p>
+                    <h2 id="setup">Setup</h2>
+                    <p>I encourage you to follow along with these examples to ensure you get the most out of it. It couldn&#39;t be easier - only three files and a couple of things to install.</p>
+                    <ul>
+                    <li>Install Mocha globally with <code>npm install -g mocha</code>.</li>
+                    <li>Then in a new directory, run <code>npm install connect chai supertest</code></li>
+                    <li>Create a file called <code>myapp.js</code></li>
+                    <li>Create a sub directory called <code>app</code> with a <code>index.html</code> file inside.</li>
+                    <li>Create a sub directory called <code>test</code> with a file inside that called <code>myapp.test.js</code></li>
+                    </ul>
+                    <p>Your file/directory structure should now look like this:</p>
 <pre><code class="lang-js">myapp.js
 app/
   index.html
 test/
   myapp.test.js
 </code></pre>
-<h2 id="the-first-test-">The first test.</h2>
-<p>Before we write any production code - let&#39;s write a test that shows our intentions. On line <code>3</code> we load the module (which we havn&#39;t written yet) and assign its return value to the variable <code>server</code>.</p>
-<p>Then we open an <code>it</code> block &amp; on line <code>7</code> we call the function that was returned from the module - this is what will start the static server. </p>
-<p>Finally we call <code>http.get()</code> and provide a callback function - inside which we can assert that we did in fact receive a <code>200</code> response.</p>
+                    <h2 id="the-first-test-">The first test.</h2>
+                    <p>Before we write any production code - let&#39;s write a test that shows our intentions. On line <code>3</code> we load the module (which we havn&#39;t written yet) and assign its return value to the variable <code>server</code>.</p>
+                    <p>Then we open an <code>it</code> block &amp; on line <code>7</code> we call the function that was returned from the module - this is what will start the static server. </p>
+                    <p>Finally we call <code>http.get()</code> and provide a callback function - inside which we can assert that we did in fact receive a <code>200</code> response.</p>
 <pre><code class="lang-js"><span class="hljs-comment">// test/myapp.test.js</span>
 <span class="hljs-keyword">var</span> assert = <span class="hljs-built_in">require</span>(<span class="hljs-string">"chai"</span>).assert;
 <span class="hljs-keyword">var</span> http   = <span class="hljs-built_in">require</span>(<span class="hljs-string">"http"</span>);
 <span class="hljs-keyword">var</span> server = <span class="hljs-built_in">require</span>(<span class="hljs-string">"../myapp"</span>);
-
 it(<span class="hljs-string">"should return a 200 response"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(done)</span> </span>{
-
     <span class="hljs-keyword">var</span> app = server();
-
     http.get(<span class="hljs-string">"http://localhost:8000"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(res)</span> </span>{
         assert.equal(res.statusCode, <span class="hljs-number">200</span>);
         done();
     });
 });
 </code></pre>
-<p>Now run <code>mocha</code> and you should see your first failing test - TDD at it&#39;s simplest.</p>
-<h2 id="turning-it-green-">Turning it green.</h2>
-<p>Now that we have a failing test, we can go ahead and write the code that will make it pass.</p>
-<p>We&#39;ll create a tiny module that will create a static web server using <a href="https://github.com/senchalabs/connect">connect</a> &amp; point it at the <code>app</code> directory. This will make it serve the <code>index.html</code> that we created earlier.</p>
+                    <p>Now run <code>mocha</code> and you should see your first failing test - TDD at it&#39;s simplest.</p>
+                    <h2 id="turning-it-green-">Turning it green.</h2>
+                    <p>Now that we have a failing test, we can go ahead and write the code that will make it pass.</p>
+                    <p>We&#39;ll create a tiny module that will create a static web server using <a href="https://github.com/senchalabs/connect">connect</a> &amp; point it at the <code>app</code> directory. This will make it serve the <code>index.html</code> that we created earlier.</p>
 <pre><code class="lang-js"><span class="hljs-comment">// myapp.js</span>
 <span class="hljs-keyword">var</span> connect = <span class="hljs-built_in">require</span>(<span class="hljs-string">"connect"</span>);
 <span class="hljs-keyword">var</span> http    = <span class="hljs-built_in">require</span>(<span class="hljs-string">"http"</span>);
 <span class="hljs-keyword">var</span> path    = <span class="hljs-built_in">require</span>(<span class="hljs-string">"path"</span>);
-
 <span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
     <span class="hljs-keyword">var</span> base = path.resolve(<span class="hljs-string">"app"</span>);
     <span class="hljs-keyword">var</span> app = connect().use(connect.static(base));
     <span class="hljs-keyword">return</span> http.createServer(app).listen(<span class="hljs-number">8000</span>);
 };
 </code></pre>
-<p>Now when you run <code>mocha</code> you should see <span style="color: green">green</span> in the console &amp; be pleased that you&#39;ve just completed your first piece of <strong>TDD</strong>.</p>
-<h2 id="testing-the-response-content-">Testing the response content.</h2>
-<p>We have successfully tested that our server can return a <code>200</code> response when the root url is requested. But in the next example, we are going to test that our server does indeed return the contents we are expecting.</p>
-<p>For simplicity, the following example just checks that the closing <code>&lt;/html&gt;</code> tag is present in the response body - not overly useful on it&#39;s own, but it demonstrates the technique well.</p>
+                    <p>Now when you run <code>mocha</code> you should see <span style="color: green">green</span> in the console &amp; be pleased that you&#39;ve just completed your first piece of <strong>TDD</strong>.</p>
+                    <h2 id="testing-the-response-content-">Testing the response content.</h2>
+                    <p>We have successfully tested that our server can return a <code>200</code> response when the root url is requested. But in the next example, we are going to test that our server does indeed return the contents we are expecting.</p>
+                    <p>For simplicity, the following example just checks that the closing <code>&lt;/html&gt;</code> tag is present in the response body - not overly useful on it&#39;s own, but it demonstrates the technique well.</p>
 <pre><code class="lang-js">it(<span class="hljs-string">"should return the correct HTML"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(done)</span> </span>{
-
     <span class="hljs-keyword">var</span> app = server();
-
     http.get(<span class="hljs-string">"http://localhost:8000"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(res)</span> </span>{
-
         <span class="hljs-keyword">var</span> chunks = [];
         res.on(<span class="hljs-string">"data"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{
             chunks.push(data);
@@ -103,22 +104,21 @@ it(<span class="hljs-string">"should return a 200 response"</span>, <span class=
             assert.isTrue(chunks.join(<span class="hljs-string">""</span>).indexOf(<span class="hljs-string">"&lt;/html&gt;"</span>) &gt; <span class="hljs-number">0</span>);
             done();
         });
-
     });
 });
 </code></pre>
-<p>We are using the <code>data</code> and <code>end</code> events on the <code>res</code> stream to ensure we are testing against the entire response body. Granted this is slightly overkill for our small example, but it&#39;s useful to see how verbose this method of testing can end up being.</p>
-<p>Now, if your <code>index.html</code> was empty - you should get a <span style="color: red">failing</span> test when you run <code>mocha</code> - go ahead and add some boilerplate HTML to it and make the test go <span style="color: green">green</span> so that we can move onto improving this testing workflow.</p>
-<h2 id="supertest-to-the-rescue-">Supertest to the rescue.</h2>
-<p>The previous examples were deliberately low-level &amp; verbose because I wanted you to see how you can manually deal with the basics of testing NodeJS servers. Even though our tests were pretty simple, they were already spanning multiple lines, had us dealing with <code>streams</code> within tests &amp; had <code>ports</code> hard-coded into both the module &amp; the test... a recipe for disaster.</p>
-<p>Let&#39;s look at how we can use Supertest in the previous examples to:</p>
-<ul>
-<li>reduce boilerplate code</li>
-<li>remove hard-coded port numbers</li>
-</ul>
-<p><strong>Never call .listen() imediately</strong></p>
-<p>Looking back at our mini-module, we are calling <code>.listen(8000)</code> from within the function - not cool. This makes it much more difficult to test because we now have to have this port number specified in our tests <em>aswell</em> as the production code!</p>
-<p>Supertest handles all of this for us &amp; removes the need for hard-coding port numbers into our tests - just return the result of <code>http.createServer(app)</code> instead.</p>
+                    <p>We are using the <code>data</code> and <code>end</code> events on the <code>res</code> stream to ensure we are testing against the entire response body. Granted this is slightly overkill for our small example, but it&#39;s useful to see how verbose this method of testing can end up being.</p>
+                    <p>Now, if your <code>index.html</code> was empty - you should get a <span style="color: red">failing</span> test when you run <code>mocha</code> - go ahead and add some boilerplate HTML to it and make the test go <span style="color: green">green</span> so that we can move onto improving this testing workflow.</p>
+                    <h2 id="supertest-to-the-rescue-">Supertest to the rescue.</h2>
+                    <p>The previous examples were deliberately low-level &amp; verbose because I wanted you to see how you can manually deal with the basics of testing NodeJS servers. Even though our tests were pretty simple, they were already spanning multiple lines, had us dealing with <code>streams</code> within tests &amp; had <code>ports</code> hard-coded into both the module &amp; the test... a recipe for disaster.</p>
+                    <p>Let&#39;s look at how we can use Supertest in the previous examples to:</p>
+                    <ul>
+                    <li>reduce boilerplate code</li>
+                    <li>remove hard-coded port numbers</li>
+                    </ul>
+                    <p><strong>Never call .listen() imediately</strong></p>
+                    <p>Looking back at our mini-module, we are calling <code>.listen(8000)</code> from within the function - not cool. This makes it much more difficult to test because we now have to have this port number specified in our tests <em>aswell</em> as the production code!</p>
+                    <p>Supertest handles all of this for us &amp; removes the need for hard-coding port numbers into our tests - just return the result of <code>http.createServer(app)</code> instead.</p>
 <pre><code class="lang-js"><span class="hljs-comment">// myapp.js</span>
 <span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
     <span class="hljs-keyword">var</span> base = path.resolve(<span class="hljs-string">"app"</span>);
@@ -126,11 +126,10 @@ it(<span class="hljs-string">"should return a 200 response"</span>, <span class=
     <span class="hljs-keyword">return</span> http.createServer(app); <span class="hljs-comment">//don't call .listen() here</span>
 };
 </code></pre>
-<p>Now in the test, we don&#39;t need the <code>http</code> module anymore because we can test our app server using Supertest.</p>
+                    <p>Now in the test, we don&#39;t need the <code>http</code> module anymore because we can test our app server using Supertest.</p>
 <pre><code class="lang-js"><span class="hljs-comment">// test/myapp.test.js</span>
 <span class="hljs-keyword">var</span> request   = <span class="hljs-built_in">require</span>(<span class="hljs-string">"supertest"</span>);
 <span class="hljs-keyword">var</span> server = <span class="hljs-built_in">require</span>(<span class="hljs-string">"../myapp"</span>);
-
 it(<span class="hljs-string">"can return a 200 response"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(done)</span> </span>{
     <span class="hljs-keyword">var</span> app = server();
     request(app)
@@ -138,18 +137,15 @@ it(<span class="hljs-string">"can return a 200 response"</span>, <span class="hl
         .expect(<span class="hljs-number">200</span>, done);
 });
 </code></pre>
-<p><strong>MUCH better</strong> - This is much more compact, understandable &amp; maintainable. We&#39;ve also removed the need for hard-coded <code>urls</code> or <code>port</code> numbers too :)</p>
-<p>Run <code>mocha</code> again now to ensure your tests are still <span style="color: green">green</span>. Next, we&#39;ll go back to our second example and use Supertest to verify the response body as we did before.</p>
-<h3 id="testing-response-body-with-supertest">Testing response body with Supertest</h3>
-<p>Just as we did before, we&#39;ll write a little assertion that verifies the HTML reponse. Only this time, Supertest is going to handle all of the stream events and simply give us a <code>res.text</code> property that we can test against.</p>
-<p>As a refresher, this is what we&#39;re trying to <strong>avoid</strong>.</p>
+                    <p><strong>MUCH better</strong> - This is much more compact, understandable &amp; maintainable. We&#39;ve also removed the need for hard-coded <code>urls</code> or <code>port</code> numbers too :)</p>
+                    <p>Run <code>mocha</code> again now to ensure your tests are still <span style="color: green">green</span>. Next, we&#39;ll go back to our second example and use Supertest to verify the response body as we did before.</p>
+                    <h3 id="testing-response-body-with-supertest">Testing response body with Supertest</h3>
+                    <p>Just as we did before, we&#39;ll write a little assertion that verifies the HTML reponse. Only this time, Supertest is going to handle all of the stream events and simply give us a <code>res.text</code> property that we can test against.</p>
+                    <p>As a refresher, this is what we&#39;re trying to <strong>avoid</strong>.</p>
 <pre><code class="lang-js"><span class="hljs-comment">// We can do better than this...</span>
 it(<span class="hljs-string">"should return the correct HTML"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(done)</span> </span>{
-
     <span class="hljs-keyword">var</span> app = server();
-
     http.get(<span class="hljs-string">"http://localhost:8000"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(res)</span> </span>{
-
         <span class="hljs-keyword">var</span> chunks = [];
         res.on(<span class="hljs-string">"data"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{
             chunks.push(data);
@@ -157,15 +153,13 @@ it(<span class="hljs-string">"should return the correct HTML"</span>, <span clas
             assert.isTrue(chunks.join(<span class="hljs-string">""</span>).indexOf(<span class="hljs-string">"&lt;/html&gt;"</span>) &gt; <span class="hljs-number">0</span>);
             done();
         });
-
     });
 });
 </code></pre>
-<p>Now here&#39;s how it would look with <strong>Supertest</strong>.</p>
+                    <p>Now here&#39;s how it would look with <strong>Supertest</strong>.</p>
 <pre><code class="lang-js"><span class="hljs-keyword">var</span> assert = <span class="hljs-built_in">require</span>(<span class="hljs-string">"chai"</span>).assert;
 <span class="hljs-keyword">var</span> request   = <span class="hljs-built_in">require</span>(<span class="hljs-string">"supertest"</span>);
 <span class="hljs-keyword">var</span> server = <span class="hljs-built_in">require</span>(<span class="hljs-string">"../myapp"</span>);
-
 it(<span class="hljs-string">"should return the correct HTML"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(done)</span> </span>{
     <span class="hljs-keyword">var</span> app = server();
     request(app)
@@ -176,35 +170,41 @@ it(<span class="hljs-string">"should return the correct HTML"</span>, <span clas
         });
 });
 </code></pre>
-<p>I think you&#39;ll agree this is a huge improvement. It&#39;s easier to understand, easier to write &amp; most importantly of all - easier to <em>maintain</em>!</p>
-<h3 id="resources">Resources</h3>
-<ul>
-<li><a href="http://visionmedia.github.io/mocha/">Mocha</a></li>
-<li><a href="http://chaijs.com/">Chai</a></li>
-<li><a href="https://github.com/visionmedia/supertest">Supertest</a></li>
-<li><a href="http://www.senchalabs.org/connect/">Connect</a></li>
-</ul>
-
-    </article>
-
-    <div id="disqus_thread"></div>
-    <script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'shakyshane'; // required: replace example with your forum shortname
-    
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-</div>
-    </div>
-</main>
+                    <p>I think you&#39;ll agree this is a huge improvement. It&#39;s easier to understand, easier to write &amp; most importantly of all - easier to <em>maintain</em>!</p>
+                    <h3 id="resources">Resources</h3>
+                    <ul>
+                    <li><a href="http://visionmedia.github.io/mocha/">Mocha</a></li>
+                    <li><a href="http://chaijs.com/">Chai</a></li>
+                    <li><a href="https://github.com/visionmedia/supertest">Supertest</a></li>
+                    <li><a href="http://www.senchalabs.org/connect/">Connect</a></li>
+                    </ul>
+                </article>
+                <footer>
+                    <p ss-Post-Meta="lowercase">
+                        <span>Prev</span>
+                        <a href="/posts/gulpjs-sass-browsersync-ftw">GulpJS + SASS + BrowserSync ftw</a>
+                    </p>
+                    <p ss-Post-Meta="lowercase">
+                        <span>Next</span>
+                        <a href="/posts/browser-sync-snippet">BrowserSync snippet injector plugin.</a>
+                    </p>
+                </footer>
+                <div id="disqus_thread"></div>
+                <script type="text/javascript">
+                    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+                    var disqus_shortname = 'shakyshane'; // required: replace example with your forum shortname
+                    /* * * DON'T EDIT BELOW THIS LINE * * */
+                    (function() {
+                        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                </script>
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+        </div>
+    </main>
     <footer ss-Footer>
         <nav ss-Social ss-Nav="footer inline">
             <a href="http://github.com/shakyShane">
@@ -242,7 +242,6 @@ it(<span class="hljs-string">"should return the correct HTML"</span>, <span clas
                 <span class="username">shaneosbourne</span>
             </a>
         </nav>
-        
         <p class="text">Building things with Javascript.</p>
     </footer>
 </body>

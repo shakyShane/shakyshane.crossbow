@@ -7,37 +7,45 @@
     <meta name="viewport" content="width=device-width">
     <meta name="description" content="Building things with Javascript.">
     <link rel="canonical" href="/posts/making-promises-with-javascript">
-    
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/main.css">
-    
     <!-- Custom Font -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lora|Oswald' rel='stylesheet' type='text/css'>
+    <!--
+    |
+    |
+    |  shakyShane.com - a static website/blog created using Crossbow.
+    |
+    |  Crossbow is a system for compiling static websites and blogs.
+    |  The Crossbow authors do not agree that the resulting markup from
+    |  a templating system or cms is 'irrelevant' - rather we see it as
+    |  an extremely important aspect of the development workflow and
+    |  have built Crossbow with this idea in mind.
+    |
+    |
+    -->
 </head>
 <body>
     <header ss-Header>
         <a ss-Title href="/">({shakyShane.com})</a>
         <nav ss-Nav="header inline">
-                    <a href="/">Posts</a>
-                    <a href="/projects">Projects</a>
+            <a href="/">Posts</a>
+            <a href="/projects">Projects</a>
         </nav>
     </header>
-    
-    
-    
-        <main>
-    <div ss-Content>
-        <div ss-Post>
-
-    <header ss-Post-Header>
-        <h1>Making Promises with Javascript</h1>
-        <p ss-Post-Meta></p>
-    </header>
-
-    <article ss-Post-Content>
-        <p>Promises are a great way to make asynchronous programming easier to write, read &amp; understand.</p>
-<p>Let&#39;s first look at a common pattern that occurs in Javascript programming.</p>
-<p>Here we are defining a function that will set the value of <code>data</code> to an array after 2 seconds - this is to simulate something like an ajax call to a back-end.</p>
+    <main>
+        <div ss-Content>
+            <div ss-Post>
+                <header ss-Post-Header>
+                    <h1>Making Promises with Javascript</h1>
+                    <p ss-Post-Meta>
+                        November 16, 2013, by shakyShane
+                    </p>
+                </header>
+                <article ss-Post-Content>
+                    <p>Promises are a great way to make asynchronous programming easier to write, read &amp; understand.</p>
+                    <p>Let&#39;s first look at a common pattern that occurs in Javascript programming.</p>
+                    <p>Here we are defining a function that will set the value of <code>data</code> to an array after 2 seconds - this is to simulate something like an ajax call to a back-end.</p>
 <pre><code class="lang-javascript"><span class="hljs-keyword">var</span> getData = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
   <span class="hljs-keyword">var</span> data;
   <span class="hljs-built_in">window</span>.setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
@@ -45,8 +53,8 @@
   }, <span class="hljs-number">2000</span>);  
 }
 </code></pre>
-<p>So, with our simulated ajax-call, how can we use the value of <code>data</code> in the rest of our program?</p>
-<p>How about making the function <code>return</code> the value of data? </p>
+                    <p>So, with our simulated ajax-call, how can we use the value of <code>data</code> in the rest of our program?</p>
+                    <p>How about making the function <code>return</code> the value of data? </p>
 <pre><code class="lang-javascript"><span class="hljs-keyword">var</span> getData = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
   <span class="hljs-keyword">var</span> data;
   <span class="hljs-built_in">window</span>.setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
@@ -54,10 +62,9 @@
   }, <span class="hljs-number">2000</span>);  
   <span class="hljs-keyword">return</span> data;
 }
-
 <span class="hljs-built_in">console</span>.log(getData()); <span class="hljs-comment">// undefined</span>
 </code></pre>
-<p>Well that didn&#39;t work too well! The thing is, by the time we return, <code>data</code> has not yet been set! Let&#39;s try something else...</p>
+                    <p>Well that didn&#39;t work too well! The thing is, by the time we return, <code>data</code> has not yet been set! Let&#39;s try something else...</p>
 <pre><code class="lang-javascript"><span class="hljs-keyword">var</span> getData = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
   <span class="hljs-keyword">var</span> data;
   <span class="hljs-built_in">window</span>.setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
@@ -66,13 +73,12 @@
      <span class="hljs-keyword">return</span> data;
   }, <span class="hljs-number">2000</span>);
 }
-
 <span class="hljs-built_in">console</span>.log(getData()); <span class="hljs-comment">// undefined</span>
 </code></pre>
-<p>Oh man! That doesn&#39;t work either! That&#39;ll be because we&#39;re actually returning from inside the callback function of setTimeout, not our function. So what&#39;s the deal? How do we access that data?...</p>
-<h3 id="say-hello-to-callback-functions">Say hello to callback functions</h3>
-<p>In Javascript, we have the ability to pass functions around easily. We can assign them to variables, pass them as arguments to other functions &amp; even return them from other functions.</p>
-<p>With this knowledge, we can pass an anonymous function  into <code>getData</code>, and then when ready, call that function.</p>
+                    <p>Oh man! That doesn&#39;t work either! That&#39;ll be because we&#39;re actually returning from inside the callback function of setTimeout, not our function. So what&#39;s the deal? How do we access that data?...</p>
+                    <h3 id="say-hello-to-callback-functions">Say hello to callback functions</h3>
+                    <p>In Javascript, we have the ability to pass functions around easily. We can assign them to variables, pass them as arguments to other functions &amp; even return them from other functions.</p>
+                    <p>With this knowledge, we can pass an anonymous function  into <code>getData</code>, and then when ready, call that function.</p>
 <pre><code class="lang-javascript"><span class="hljs-keyword">var</span> getData = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(callback)</span></span>{
   <span class="hljs-keyword">var</span> data;
   <span class="hljs-built_in">window</span>.setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
@@ -81,18 +87,17 @@
      callback(data);
   }, <span class="hljs-number">2000</span>);
 }
-
 <span class="hljs-comment">// passing a call-back function as a parameter.</span>
 getData(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(data)</span></span>{
     <span class="hljs-built_in">console</span>.log(data) <span class="hljs-comment">// [1, 2]</span>
 });
 </code></pre>
-<p>SUCCESS! we now have access to the data and we could do whatever we like with it! :)</p>
-<p>By passing a function as a argument, we are able to call that passed-in function whenever it suits us. In this case it&#39;s when the fake Ajax request returned a value after 2 seconds.</p>
-<h3 id="now-say-hello-to-the-pyramid-of-doom-">Now say hello to the &#39;pyramid of doom&#39;</h3>
-<p>The above example shows a single callback. It&#39;s nice &amp; compact, easy to read &amp; understand... But what happens if you need to use multiple callbacks to achieve your goal? What happens if you need to make ANOTHER asyncronous function call with the the result of the previous one?</p>
-<p>Let&#39;s say that after fetching our first batch of data, we need to append something to it.</p>
-<p>We now need two functions like this.</p>
+                    <p>SUCCESS! we now have access to the data and we could do whatever we like with it! :)</p>
+                    <p>By passing a function as a argument, we are able to call that passed-in function whenever it suits us. In this case it&#39;s when the fake Ajax request returned a value after 2 seconds.</p>
+                    <h3 id="now-say-hello-to-the-pyramid-of-doom-">Now say hello to the &#39;pyramid of doom&#39;</h3>
+                    <p>The above example shows a single callback. It&#39;s nice &amp; compact, easy to read &amp; understand... But what happens if you need to use multiple callbacks to achieve your goal? What happens if you need to make ANOTHER asyncronous function call with the the result of the previous one?</p>
+                    <p>Let&#39;s say that after fetching our first batch of data, we need to append something to it.</p>
+                    <p>We now need two functions like this.</p>
 <pre><code class="lang-javascript"><span class="hljs-comment">// first function, get's the data after 2 seconds</span>
 <span class="hljs-keyword">var</span> getData = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(callback)</span></span>{  
   <span class="hljs-keyword">var</span> data;
@@ -102,7 +107,6 @@ getData(<span class="hljs-function"><span class="hljs-keyword">function</span><s
      callback(data);
   }, <span class="hljs-number">2000</span>);
 };
-
 <span class="hljs-comment">// second function, appends to the data after 1 second</span>
 <span class="hljs-keyword">var</span> modifyData = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(data, callback)</span></span>{
     <span class="hljs-built_in">window</span>.setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
@@ -111,7 +115,6 @@ getData(<span class="hljs-function"><span class="hljs-keyword">function</span><s
      callback(data);
   }, <span class="hljs-number">1000</span>);
 };
-
 <span class="hljs-comment">// now we nest the callbacks &amp; successfully get the data</span>
 getData(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(data)</span></span>{
   modifyData(data, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(result)</span></span>{
@@ -119,8 +122,8 @@ getData(<span class="hljs-function"><span class="hljs-keyword">function</span><s
   });
 });
 </code></pre>
-<p>This may not seem too troublesome right now, but consider needing 3, 4, 5 or more callbacks? It end&#39;s up looking like this...</p>
-<h3 id="callback-hell">Callback hell</h3>
+                    <p>This may not seem too troublesome right now, but consider needing 3, 4, 5 or more callbacks? It end&#39;s up looking like this...</p>
+                    <h3 id="callback-hell">Callback hell</h3>
 <pre><code class="lang-javascript"><span class="hljs-comment">// from https://github.com/kriskowal/q</span>
 step1(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value1)</span> </span>{
     step2(value1, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value2)</span> </span>{
@@ -132,14 +135,14 @@ step1(<span class="hljs-function"><span class="hljs-keyword">function</span> <sp
     });
 });
 </code></pre>
-<p>Not so easy to read &amp; understand now is it?</p>
-<p>This <em>pyramid of doom</em> (also known as &#39;callback hell&#39;) is a very common problem with ansyncronous programming... but there are ways to make life a little easier.</p>
-<h2 id="backing-up">Backing up</h2>
-<p>Going back to our example, what we really want to say is &quot;go and get the data &amp; when you have it do the following with it...&quot; - sounds sounds so simple! Well with promises, we can make our code look exactly like what it does.</p>
-<blockquote>
-<p>In the following examples, I&#39;m using Q from <a href="https://github.com/kriskowal/q">https://github.com/kriskowal/q</a></p>
-</blockquote>
-<p>First, let&#39;s take the code from above, add a third step to it &amp; implement it using promises</p>
+                    <p>Not so easy to read &amp; understand now is it?</p>
+                    <p>This <em>pyramid of doom</em> (also known as &#39;callback hell&#39;) is a very common problem with ansyncronous programming... but there are ways to make life a little easier.</p>
+                    <h2 id="backing-up">Backing up</h2>
+                    <p>Going back to our example, what we really want to say is &quot;go and get the data &amp; when you have it do the following with it...&quot; - sounds sounds so simple! Well with promises, we can make our code look exactly like what it does.</p>
+                    <blockquote>
+                    <p>In the following examples, I&#39;m using Q from <a href="https://github.com/kriskowal/q">https://github.com/kriskowal/q</a></p>
+                    </blockquote>
+                    <p>First, let&#39;s take the code from above, add a third step to it &amp; implement it using promises</p>
 <pre><code class="lang-javascript"><span class="hljs-comment">// functions that cannot return right away, return a promise instead.</span>
 <span class="hljs-keyword">var</span> getData = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{  
   <span class="hljs-keyword">var</span> deferred = Q.defer();
@@ -149,7 +152,6 @@ step1(<span class="hljs-function"><span class="hljs-keyword">function</span> <sp
   }, <span class="hljs-number">2000</span>);
   <span class="hljs-keyword">return</span> deferred.promise;
 };
-
 <span class="hljs-comment">// Takes data, also returns a promise</span>
 <span class="hljs-keyword">var</span> appendData = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(data)</span> </span>{  
   <span class="hljs-keyword">var</span> deferred = Q.defer();
@@ -159,7 +161,6 @@ step1(<span class="hljs-function"><span class="hljs-keyword">function</span> <sp
   }, <span class="hljs-number">1000</span>);
   <span class="hljs-keyword">return</span> deferred.promise;
 };
-
 <span class="hljs-comment">// Takes data, returns another promise</span>
 <span class="hljs-keyword">var</span> appendMoreData = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(data)</span> </span>{  
   <span class="hljs-keyword">var</span> deferred = Q.defer();
@@ -169,7 +170,6 @@ step1(<span class="hljs-function"><span class="hljs-keyword">function</span> <sp
   }, <span class="hljs-number">1000</span>);
   <span class="hljs-keyword">return</span> deferred.promise;
 };
-
 <span class="hljs-comment">// Now we have got rid of the pyramid &amp; our code</span>
 <span class="hljs-comment">// looks like what it does - do this, then that, then this. etc</span>
 getData().then(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(data)</span> </span>{  
@@ -180,47 +180,52 @@ getData().then(<span class="hljs-function"><span class="hljs-keyword">function</
   <span class="hljs-built_in">console</span>.log(data); <span class="hljs-comment">// 1, 2, 3, 4</span>
 });
 </code></pre>
-<p>You can see we are no-longer passing in another function to be used as a callback each time. Instead, whenever we call a function that cannot return a value straight way, we create a deferred object with <code>var deferred = Q.defer();</code> and then return  <code>deferred.promise</code>. </p>
-<p>This is like the function turning around and saying:</p>
-<blockquote>
-<p>&quot;hey, you asked me for data but I can&#39;t give it to you just yet. Take this promise instead and I&#39;ll fulfill it as soon as I can.</p>
-</blockquote>
-<h3 id="breaking-it-down">Breaking it down</h3>
-<p>To help understand exactly what&#39;s going on here, let&#39;s strip away the async stuff &amp; look at a promise in it&#39;s simplest form.</p>
+                    <p>You can see we are no-longer passing in another function to be used as a callback each time. Instead, whenever we call a function that cannot return a value straight way, we create a deferred object with <code>var deferred = Q.defer();</code> and then return  <code>deferred.promise</code>. </p>
+                    <p>This is like the function turning around and saying:</p>
+                    <blockquote>
+                    <p>&quot;hey, you asked me for data but I can&#39;t give it to you just yet. Take this promise instead and I&#39;ll fulfill it as soon as I can.</p>
+                    </blockquote>
+                    <h3 id="breaking-it-down">Breaking it down</h3>
+                    <p>To help understand exactly what&#39;s going on here, let&#39;s strip away the async stuff &amp; look at a promise in it&#39;s simplest form.</p>
 <pre><code class="lang-javascript"><span class="hljs-comment">// create a deferred object, resolve it with a value &amp; return the promise</span>
 <span class="hljs-keyword">var</span> getName = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{  
   <span class="hljs-keyword">var</span> deferred = Q.defer();
   deferred.resolve(<span class="hljs-string">"Shane"</span>);
   <span class="hljs-keyword">return</span> deferred.promise;
 };
-
 <span class="hljs-comment">// `resp` is now the value that was 'resolved'</span>
 getName().then(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(resp)</span></span>{
     <span class="hljs-built_in">console</span>.log(resp); <span class="hljs-comment">// Shane</span>
 });
 </code></pre>
-<p>To be continued...</p>
-
-    </article>
-
-    <div id="disqus_thread"></div>
-    <script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'shakyshane'; // required: replace example with your forum shortname
-    
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-</div>
-    </div>
-</main>
+                    <p>To be continued...</p>
+                </article>
+                <footer>
+                    <p ss-Post-Meta="lowercase">
+                        <span>Prev</span>
+                        <a href="/posts/function-composition-in-javascript">Function Composition in Javascript.</a>
+                    </p>
+                    <p ss-Post-Meta="lowercase">
+                        <span>Next</span>
+                        <a href="/posts/testing-angular-directives-with-isolated-scope">Testing Angular Directives with Isolated Scope</a>
+                    </p>
+                </footer>
+                <div id="disqus_thread"></div>
+                <script type="text/javascript">
+                    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+                    var disqus_shortname = 'shakyshane'; // required: replace example with your forum shortname
+                    /* * * DON'T EDIT BELOW THIS LINE * * */
+                    (function() {
+                        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                </script>
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+        </div>
+    </main>
     <footer ss-Footer>
         <nav ss-Social ss-Nav="footer inline">
             <a href="http://github.com/shakyShane">
@@ -258,7 +263,6 @@ getName().then(<span class="hljs-function"><span class="hljs-keyword">function</
                 <span class="username">shaneosbourne</span>
             </a>
         </nav>
-        
         <p class="text">Building things with Javascript.</p>
     </footer>
 </body>

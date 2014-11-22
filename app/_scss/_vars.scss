@@ -9,7 +9,6 @@ $bg: #da4453;
 $lime: #D3ED13;
 $header-bg: #fbfbfb;
 
-
 /**
  * Neutrals
  */
@@ -40,7 +39,7 @@ TYPOGRAPHY
 ================================================================================*/
 
 $sans: "Open Sans",sans-serif;
-$serif: Georgia, serif;
+$serif: "Lora", Georgia, serif;
 $mono: monospace;
 
 
@@ -49,16 +48,15 @@ $mono: monospace;
  */
 $base-font-size: 16px;
 $base-line-height: 1.5;
-$base-font-family: $sans;
+$base-font-family: $serif;
 $base-color: $grey;
-
 
 /**
  * Headings
  */
 $hn-font-weight: 700;
 $hn-line-height: 1;
-$hn-font-family: $sans;
+$hn-font-family: "Oswald";
 $hn-color: $navy;
 $h1-size: 48px;
 $h2-size: 32px;

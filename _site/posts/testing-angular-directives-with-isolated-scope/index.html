@@ -7,36 +7,44 @@
     <meta name="viewport" content="width=device-width">
     <meta name="description" content="Building things with Javascript.">
     <link rel="canonical" href="/posts/testing-angular-directives-with-isolated-scope">
-    
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/main.css">
-    
     <!-- Custom Font -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lora|Oswald' rel='stylesheet' type='text/css'>
+    <!--
+    |
+    |
+    |  shakyShane.com - a static website/blog created using Crossbow.
+    |
+    |  Crossbow is a system for compiling static websites and blogs.
+    |  The Crossbow authors do not agree that the resulting markup from
+    |  a templating system or cms is 'irrelevant' - rather we see it as
+    |  an extremely important aspect of the development workflow and
+    |  have built Crossbow with this idea in mind.
+    |
+    |
+    -->
 </head>
 <body>
     <header ss-Header>
         <a ss-Title href="/">({shakyShane.com})</a>
         <nav ss-Nav="header inline">
-                    <a href="/">Posts</a>
-                    <a href="/projects">Projects</a>
+            <a href="/">Posts</a>
+            <a href="/projects">Projects</a>
         </nav>
     </header>
-    
-    
-    
-        <main>
-    <div ss-Content>
-        <div ss-Post>
-
-    <header ss-Post-Header>
-        <h1>Testing Angular Directives with Isolated Scope</h1>
-        <p ss-Post-Meta></p>
-    </header>
-
-    <article ss-Post-Content>
-        <p>Passing objects into a directive&#39;s scope is an extremely useful practice as it lets you focus on the job of the directive without worrying about the &#39;outside world&#39;.</p>
-<p>Specifying a <code>scope</code> property on a directive <em>isolates</em> it from any parent scopes &amp; when you need access to anything from a parent scope, you can explicitly pass it through, like this:</p>
+    <main>
+        <div ss-Content>
+            <div ss-Post>
+                <header ss-Post-Header>
+                    <h1>Testing Angular Directives with Isolated Scope</h1>
+                    <p ss-Post-Meta>
+                        November 17, 2013, by shakyShane
+                    </p>
+                </header>
+                <article ss-Post-Content>
+                    <p>Passing objects into a directive&#39;s scope is an extremely useful practice as it lets you focus on the job of the directive without worrying about the &#39;outside world&#39;.</p>
+                    <p>Specifying a <code>scope</code> property on a directive <em>isolates</em> it from any parent scopes &amp; when you need access to anything from a parent scope, you can explicitly pass it through, like this:</p>
 <pre><code class="lang-js">angular.module(<span class="hljs-string">"TestExample"</span>, []).directive(<span class="hljs-string">"tabs"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
     <span class="hljs-keyword">return</span> {
         restrict: <span class="hljs-string">"E"</span>,
@@ -44,44 +52,35 @@
             user: <span class="hljs-string">"="</span>
         },
         controller: [<span class="hljs-string">"$scope"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
-
             <span class="hljs-comment">// Access to the User</span>
             <span class="hljs-built_in">console</span>.log($scope.user);
-
         }]
     };
 });
 </code></pre>
-<h3 id="how-do-we-test-it-though-">How do we test it though?</h3>
-<p>This test will fail as we&#39;re looking at the wrong scope when we assert.</p>
+                    <h3 id="how-do-we-test-it-though-">How do we test it though?</h3>
+                    <p>This test will fail as we&#39;re looking at the wrong scope when we assert.</p>
 <pre><code class="lang-js">describe(<span class="hljs-string">"Directive: Tabs"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-
     <span class="hljs-keyword">var</span> scope, element, compile;
     beforeEach(<span class="hljs-built_in">module</span>(<span class="hljs-string">'TestExample'</span>));
-
     <span class="hljs-comment">// Initialize the controller and a mock scope</span>
     beforeEach(inject(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($compile, $rootScope)</span> </span>{
         scope = $rootScope;
         compile = $compile;
     }));
-
     describe(<span class="hljs-string">"Rendering tabs for the user"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
         beforeEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-
             <span class="hljs-comment">// Set the user on the parent scope to simulate how it'd happen in your app</span>
             scope.userFromParent = {
                 name: <span class="hljs-string">"Shane"</span>, 
                 age: <span class="hljs-string">"28"</span>
             };
-
             <span class="hljs-comment">// Pass in the user object to the directive</span>
             element = angular.element(<span class="hljs-string">'&lt;tabs  user="userFromParent"&gt;&lt;/tabs&gt;'</span>);
-
             <span class="hljs-comment">// Compile &amp; Digest as normal</span>
             compile(element)(scope);
             scope.$digest();
         });
-
         <span class="hljs-comment">// This test will fail as we're looking at the parent scope here &amp; not the directives' 'isolated' scope.</span>
         it(<span class="hljs-string">"should have access to the user"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
             expect(scope.user).toBeDefined(); <span class="hljs-comment">// Test Failed!</span>
@@ -89,33 +88,39 @@
     });
 });
 </code></pre>
-<h3 id="solution">Solution</h3>
-<p>To test if a directive has access to items on it&#39;s own isolated scope, you can access it like this in your tests.</p>
+                    <h3 id="solution">Solution</h3>
+                    <p>To test if a directive has access to items on it&#39;s own isolated scope, you can access it like this in your tests.</p>
 <pre><code class="lang-js">it(<span class="hljs-string">"should have access to the user"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
     expect(element.scope().user).toBeDefined(); <span class="hljs-comment">// Test PASSED!</span>
 });
 </code></pre>
-
-    </article>
-
-    <div id="disqus_thread"></div>
-    <script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'shakyshane'; // required: replace example with your forum shortname
-    
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-</div>
-    </div>
-</main>
+                </article>
+                <footer>
+                    <p ss-Post-Meta="lowercase">
+                        <span>Prev</span>
+                        <a href="/posts/making-promises-with-javascript">Making Promises with Javascript</a>
+                    </p>
+                    <p ss-Post-Meta="lowercase">
+                        <span>Next</span>
+                        <a href="/posts/browsersync-its-getting-a-ui">BrowserSync - it&#x27;s getting a UI</a>
+                    </p>
+                </footer>
+                <div id="disqus_thread"></div>
+                <script type="text/javascript">
+                    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+                    var disqus_shortname = 'shakyshane'; // required: replace example with your forum shortname
+                    /* * * DON'T EDIT BELOW THIS LINE * * */
+                    (function() {
+                        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                </script>
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+        </div>
+    </main>
     <footer ss-Footer>
         <nav ss-Social ss-Nav="footer inline">
             <a href="http://github.com/shakyShane">
@@ -153,7 +158,6 @@
                 <span class="username">shaneosbourne</span>
             </a>
         </nav>
-        
         <p class="text">Building things with Javascript.</p>
     </footer>
 </body>

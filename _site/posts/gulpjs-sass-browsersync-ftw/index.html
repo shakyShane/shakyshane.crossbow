@@ -7,82 +7,90 @@
     <meta name="viewport" content="width=device-width">
     <meta name="description" content="Building things with Javascript.">
     <link rel="canonical" href="/posts/gulpjs-sass-browsersync-ftw">
-    
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/main.css">
-    
     <!-- Custom Font -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lora|Oswald' rel='stylesheet' type='text/css'>
+    <!--
+    |
+    |
+    |  shakyShane.com - a static website/blog created using Crossbow.
+    |
+    |  Crossbow is a system for compiling static websites and blogs.
+    |  The Crossbow authors do not agree that the resulting markup from
+    |  a templating system or cms is 'irrelevant' - rather we see it as
+    |  an extremely important aspect of the development workflow and
+    |  have built Crossbow with this idea in mind.
+    |
+    |
+    -->
 </head>
 <body>
     <header ss-Header>
         <a ss-Title href="/">({shakyShane.com})</a>
         <nav ss-Nav="header inline">
-                    <a href="/">Posts</a>
-                    <a href="/projects">Projects</a>
+            <a href="/">Posts</a>
+            <a href="/projects">Projects</a>
         </nav>
     </header>
-    
-    
-    
-        <main>
-    <div ss-Content>
-        <div ss-Post>
-
-    <header ss-Post-Header>
-        <h1>GulpJS + SASS + BrowserSync ftw</h1>
-        <p ss-Post-Meta></p>
-    </header>
-
-    <article ss-Post-Content>
-        <p>Being the <em>new-kid-on-the-block</em>, <a href="http://gulpjs.com/">GulpJS</a> is getting plently of attention lately. Instead of contributing to the pool of opinion-pieces out there though, I thought I&#39;d walk you through setting it up with a really nice little workflow including <code>SASS</code> for CSS along with my open-source project, <a href="http://www.browsersync.io">BrowserSync.io</a>.</p>
-<p>The end result will be a pretty sweet front-end development setup including:</p>
-<ul>
-<li><strong>SCSS</strong> File watching/compilation.</li>
-<li><strong>Live CSS injecting</strong> into multiple devices.</li>
-<li>A <strong>Server</strong> running on an IP address that can be accessed on multiple devices/screens.</li>
-<li><strong>Syncronized</strong> scroll, clicks, links &amp; form fields across all devices.</li>
-</ul>
-<p><img src="https://pbs.twimg.com/media/BehaekGCEAAp9bM.jpg" alt="Modern Developer workflow - Image by Addy Osmani"></p>
-<p>This photo from  <a href="https://twitter.com/addyosmani">@addyosmani</a> shows BrowserSync in use.</p>
-<h3 id="prerequisites">Prerequisites</h3>
-<p>Before starting, you should have:</p>
-<ol>
-<li>A project containing at <em>least</em> an <code>index.html</code> &amp; some <code>scss</code> files.</li>
-<li><a href="http://nodejs.org">NodeJS</a> installed.</li>
-<li><a href="http://gulpjs.com/">GulpJS</a> installed globally <code>npm install -g gulp</code></li>
-</ol>
-<h2 id="assumptions">Assumptions</h2>
-<p>All following examples/configuration assume we&#39;re dealing with a simple HTML/CSS/JS project with the following structure.</p>
+    <main>
+        <div ss-Content>
+            <div ss-Post>
+                <header ss-Post-Header>
+                    <h1>GulpJS + SASS + BrowserSync ftw</h1>
+                    <p ss-Post-Meta>
+                        January 25, 2014, by shakyShane
+                    </p>
+                </header>
+                <article ss-Post-Content>
+                    <p>Being the <em>new-kid-on-the-block</em>, <a href="http://gulpjs.com/">GulpJS</a> is getting plently of attention lately. Instead of contributing to the pool of opinion-pieces out there though, I thought I&#39;d walk you through setting it up with a really nice little workflow including <code>SASS</code> for CSS along with my open-source project, <a href="http://www.browsersync.io">BrowserSync.io</a>.</p>
+                    <p>The end result will be a pretty sweet front-end development setup including:</p>
+                    <ul>
+                    <li><strong>SCSS</strong> File watching/compilation.</li>
+                    <li><strong>Live CSS injecting</strong> into multiple devices.</li>
+                    <li>A <strong>Server</strong> running on an IP address that can be accessed on multiple devices/screens.</li>
+                    <li><strong>Syncronized</strong> scroll, clicks, links &amp; form fields across all devices.</li>
+                    </ul>
+                    <p><img src="https://pbs.twimg.com/media/BehaekGCEAAp9bM.jpg" alt="Modern Developer workflow - Image by Addy Osmani"></p>
+                    <p>This photo from  <a href="https://twitter.com/addyosmani">@addyosmani</a> shows BrowserSync in use.</p>
+                    <h3 id="prerequisites">Prerequisites</h3>
+                    <p>Before starting, you should have:</p>
+                    <ol>
+                    <li>A project containing at <em>least</em> an <code>index.html</code> &amp; some <code>scss</code> files.</li>
+                    <li><a href="http://nodejs.org">NodeJS</a> installed.</li>
+                    <li><a href="http://gulpjs.com/">GulpJS</a> installed globally <code>npm install -g gulp</code></li>
+                    </ol>
+                    <h2 id="assumptions">Assumptions</h2>
+                    <p>All following examples/configuration assume we&#39;re dealing with a simple HTML/CSS/JS project with the following structure.</p>
 <pre><code class="lang-js"><span class="hljs-comment">// Assumed file/dir structure</span>
 index.html
 css/
 scss/
 js/
 </code></pre>
-<p>You should alter any path/filenames to match your project where needed.</p>
-<h3 id="step-1-small-install-the-tools-small-">Step 1 - <small>install the tools</small></h3>
-<p>We need to install 3 tools locally to our project - <code>gulp</code>, <code>gulp-sass</code> &amp; <code>browser-sync</code>. In your terminal/command line, navigate to your project directory and run </p>
+                    <p>You should alter any path/filenames to match your project where needed.</p>
+                    <h3 id="step-1-small-install-the-tools-small-">Step 1 - <small>install the tools</small></h3>
+                    <p>We need to install 3 tools locally to our project - <code>gulp</code>, <code>gulp-sass</code> &amp; <code>browser-sync</code>. In your terminal/command line, navigate to your project directory and run </p>
 <pre><code class="lang-bash">npm install gulp gulp-sass browser-sync
 </code></pre>
-<h3 id="step-2-small-create-gulpfile-js-small-">Step 2 - <small>create gulpfile.js</small></h3>
-<p>Also in your project root, create a file called <code>gulpfile.js</code>. This is the file in which we&#39;ll configure our tools.</p>
-<h3 id="step-3-small-require-the-tools-small-">Step 3 - <small>require() the tools</small></h3>
-<p>Open up <code>gulpfile.js</code> in your favourite editing tool and place this at the top.</p>
+                    <h3 id="step-2-small-create-gulpfile-js-small-">Step 2 - <small>create gulpfile.js</small></h3>
+                    <p>Also in your project root, create a file called <code>gulpfile.js</code>. This is the file in which we&#39;ll configure our tools.</p>
+                    <h3 id="step-3-small-require-the-tools-small-">Step 3 - <small>require() the tools</small></h3>
+                    <p>Open up <code>gulpfile.js</code> in your favourite editing tool and place this at the top.</p>
 <pre><code class="lang-js"><span class="hljs-keyword">var</span> gulp = <span class="hljs-built_in">require</span>(<span class="hljs-string">'gulp'</span>);
 <span class="hljs-keyword">var</span> sass = <span class="hljs-built_in">require</span>(<span class="hljs-string">'gulp-sass'</span>);
 <span class="hljs-keyword">var</span> browserSync = <span class="hljs-built_in">require</span>(<span class="hljs-string">'browser-sync'</span>);
 </code></pre>
-<h3 id="step-4-small-create-tasks-small-">Step 4 - <small>Create tasks</small></h3>
-<p>We&#39;ll have a separate task for compiling <code>SCSS</code> into <code>CSS</code> &amp; one for starting BrowserSync.</p>
-<p><strong>SASS</strong> - Here we specify the path to our main <code>scss</code> file (the one that contains all of the <strong>@imports</strong>), then we <em>pipe</em> the files into the <code>sass</code> function (that we required above) and finally into <code>gulp.dest</code> which will write the output into the CSS directory.</p>
+                    <h3 id="step-4-small-create-tasks-small-">Step 4 - <small>Create tasks</small></h3>
+                    <p>We&#39;ll have a separate task for compiling <code>SCSS</code> into <code>CSS</code> &amp; one for starting BrowserSync.</p>
+                    <p><strong>SASS</strong> - Here we specify the path to our main <code>scss</code> file (the one that contains all of the <strong>@imports</strong>), then we <em>pipe</em> the files into the <code>sass</code> function (that we required above) and finally into <code>gulp.dest</code> which will write the output into the CSS directory.</p>
 <pre><code class="lang-js">gulp.task(<span class="hljs-string">'sass'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
     gulp.src(<span class="hljs-string">'scss/styles.scss'</span>)
         .pipe(sass({includePaths: [<span class="hljs-string">'scss'</span>]}))
         .pipe(gulp.dest(<span class="hljs-string">'css'</span>));
 });
 </code></pre>
-<p><strong>BrowserSync</strong> - First we tell BrowserSync to watch any <code>css</code> &amp; <code>js</code> files for changes (which will allow the live updating/reload features to work) &amp; the second param can contain any normal BrowserSync <a href="https://github.com/shakyShane/browser-sync/wiki/Working-with-a-Config-File">options</a>. In our case though, we just want to start a server in the root of the project.</p>
+                    <p><strong>BrowserSync</strong> - First we tell BrowserSync to watch any <code>css</code> &amp; <code>js</code> files for changes (which will allow the live updating/reload features to work) &amp; the second param can contain any normal BrowserSync <a href="https://github.com/shakyShane/browser-sync/wiki/Working-with-a-Config-File">options</a>. In our case though, we just want to start a server in the root of the project.</p>
 <pre><code class="lang-js">gulp.task(<span class="hljs-string">'browser-sync'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
     browserSync.init([<span class="hljs-string">"css/*.css"</span>, <span class="hljs-string">"js/*.js"</span>], {
         server: {
@@ -91,23 +99,21 @@ js/
     });
 });
 </code></pre>
-<p><strong>Watch</strong> - So far we&#39;ve configured two separate tasks &amp; now we&#39;ll tie them together using gulp&#39;s <code>default</code> task. First, we will run the sass compiler ONCE (to ensure the first page load has the latest CSS) &amp; then BrowserSync will start the server &amp; open up a browser. Finally we watch the <code>scss</code> files in the background for changes &amp; run the <code>sass</code> task each time.</p>
+                    <p><strong>Watch</strong> - So far we&#39;ve configured two separate tasks &amp; now we&#39;ll tie them together using gulp&#39;s <code>default</code> task. First, we will run the sass compiler ONCE (to ensure the first page load has the latest CSS) &amp; then BrowserSync will start the server &amp; open up a browser. Finally we watch the <code>scss</code> files in the background for changes &amp; run the <code>sass</code> task each time.</p>
 <pre><code class="lang-js">gulp.task(<span class="hljs-string">'default'</span>, [<span class="hljs-string">'sass'</span>, <span class="hljs-string">'browser-sync'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
     gulp.watch(<span class="hljs-string">"scss/*.scss"</span>, [<span class="hljs-string">'sass'</span>]);
 });
 </code></pre>
-<h3 id="seeing-it-all-together">Seeing it all together</h3>
-<p>The entire <code>gulpfile.js</code> should now look like this.</p>
+                    <h3 id="seeing-it-all-together">Seeing it all together</h3>
+                    <p>The entire <code>gulpfile.js</code> should now look like this.</p>
 <pre><code class="lang-js"><span class="hljs-keyword">var</span> gulp = <span class="hljs-built_in">require</span>(<span class="hljs-string">'gulp'</span>);
 <span class="hljs-keyword">var</span> sass = <span class="hljs-built_in">require</span>(<span class="hljs-string">'gulp-sass'</span>);
 <span class="hljs-keyword">var</span> browserSync = <span class="hljs-built_in">require</span>(<span class="hljs-string">'browser-sync'</span>);
-
 gulp.task(<span class="hljs-string">'sass'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
     gulp.src(<span class="hljs-string">'scss/styles.scss'</span>)
         .pipe(sass({includePaths: [<span class="hljs-string">'scss'</span>]}))
         .pipe(gulp.dest(<span class="hljs-string">'css'</span>));
 });
-
 gulp.task(<span class="hljs-string">'browser-sync'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
     browserSync.init([<span class="hljs-string">"css/*.css"</span>, <span class="hljs-string">"js/*.js"</span>], {
         server: {
@@ -115,43 +121,48 @@ gulp.task(<span class="hljs-string">'browser-sync'</span>, <span class="hljs-fun
         }
     });
 });
-
 gulp.task(<span class="hljs-string">'default'</span>, [<span class="hljs-string">'sass'</span>, <span class="hljs-string">'browser-sync'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
     gulp.watch(<span class="hljs-string">"scss/*.scss"</span>, [<span class="hljs-string">'sass'</span>]);
 });
 </code></pre>
-<h3 id="running-it-">Running it.</h3>
-<p>We&#39;re all set up now. All that remains is to head back to the command-line and run.</p>
+                    <h3 id="running-it-">Running it.</h3>
+                    <p>We&#39;re all set up now. All that remains is to head back to the command-line and run.</p>
 <pre><code class="lang-bash">gulp
 </code></pre>
-<p>A browser window will open up automatically &amp; will serve up your <code>index.html</code> file. Take note of the URL, you can use it on <strong>any device</strong> that&#39;s connected to your WIFI network &amp; all of the BrowserSync features will work across them all. (create for reponsive stuff).</p>
-<p><strong>Don&#39;t forget, you&#39;re being watched</strong> - you now have a great development workflow where any changes to <code>scss</code> files will automatically trigger the compilation. When that&#39;s done, BrowserSync will notice that the <code>css</code> file was changed &amp; will auto-inject the new file into all browsers.</p>
-<h3 id="notes">Notes</h3>
-<ol>
-<li>For the sake of simplicity, I removed the step of creating a package.json. If you do want to save your tooling dependencies as you install them, you can run <code>npm init</code> before you start &amp; then add <code>--save-dev</code> to any install commands you run.</li>
-<li>The <code>gulp-sass</code> plugin uses the node port of SASS, NOT the ruby version. This is much, much faster - but it&#39;s not quite 100% compatible yet, so just be careful when using with legacy projects.</li>
-</ol>
-
-    </article>
-
-    <div id="disqus_thread"></div>
-    <script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'shakyshane'; // required: replace example with your forum shortname
-    
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-</div>
-    </div>
-</main>
+                    <p>A browser window will open up automatically &amp; will serve up your <code>index.html</code> file. Take note of the URL, you can use it on <strong>any device</strong> that&#39;s connected to your WIFI network &amp; all of the BrowserSync features will work across them all. (create for reponsive stuff).</p>
+                    <p><strong>Don&#39;t forget, you&#39;re being watched</strong> - you now have a great development workflow where any changes to <code>scss</code> files will automatically trigger the compilation. When that&#39;s done, BrowserSync will notice that the <code>css</code> file was changed &amp; will auto-inject the new file into all browsers.</p>
+                    <h3 id="notes">Notes</h3>
+                    <ol>
+                    <li>For the sake of simplicity, I removed the step of creating a package.json. If you do want to save your tooling dependencies as you install them, you can run <code>npm init</code> before you start &amp; then add <code>--save-dev</code> to any install commands you run.</li>
+                    <li>The <code>gulp-sass</code> plugin uses the node port of SASS, NOT the ruby version. This is much, much faster - but it&#39;s not quite 100% compatible yet, so just be careful when using with legacy projects.</li>
+                    </ol>
+                </article>
+                <footer>
+                    <p ss-Post-Meta="lowercase">
+                        <span>Prev</span>
+                        <a href="/posts/browsersync-its-getting-a-ui">BrowserSync - it&#x27;s getting a UI</a>
+                    </p>
+                    <p ss-Post-Meta="lowercase">
+                        <span>Next</span>
+                        <a href="/posts/beginners-guide-to-testing-nodejs-servers">Beginners guide to testing NodeJS Servers</a>
+                    </p>
+                </footer>
+                <div id="disqus_thread"></div>
+                <script type="text/javascript">
+                    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+                    var disqus_shortname = 'shakyshane'; // required: replace example with your forum shortname
+                    /* * * DON'T EDIT BELOW THIS LINE * * */
+                    (function() {
+                        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                </script>
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+        </div>
+    </main>
     <footer ss-Footer>
         <nav ss-Social ss-Nav="footer inline">
             <a href="http://github.com/shakyShane">
@@ -189,7 +200,6 @@ gulp.task(<span class="hljs-string">'default'</span>, [<span class="hljs-string"
                 <span class="username">shaneosbourne</span>
             </a>
         </nav>
-        
         <p class="text">Building things with Javascript.</p>
     </footer>
 </body>

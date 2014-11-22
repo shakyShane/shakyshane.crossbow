@@ -7,70 +7,85 @@
     <meta name="viewport" content="width=device-width">
     <meta name="description" content="Building things with Javascript.">
     <link rel="canonical" href="/index.html">
-    
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/main.css">
-    
     <!-- Custom Font -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lora|Oswald' rel='stylesheet' type='text/css'>
+    <!--
+    |
+    |
+    |  shakyShane.com - a static website/blog created using Crossbow.
+    |
+    |  Crossbow is a system for compiling static websites and blogs.
+    |  The Crossbow authors do not agree that the resulting markup from
+    |  a templating system or cms is 'irrelevant' - rather we see it as
+    |  an extremely important aspect of the development workflow and
+    |  have built Crossbow with this idea in mind.
+    |
+    |
+    -->
 </head>
 <body>
     <header ss-Header>
         <a ss-Title href="/">({shakyShane.com})</a>
         <nav ss-Nav="header inline">
-                    <a href="/" class="active">Posts</a>
-                    <a href="/projects">Projects</a>
+            <a href="/" class="active">Posts</a>
+            <a href="/projects">Projects</a>
         </nav>
     </header>
-    
-    
-    
-        <main>
-    <div ss-Content>
-        <article>
-    <p><h1>Posts</h1></p>
-<ul ss-Nav="posts">
-    <li>
-        <span ss-Post-Date>August 24, 2014</span>
-        <a href="/posts/browser-sync-plus-grunt" title="BrowserSync + Grunt - a common problem addressed">BrowserSync + Grunt - a common problem addressed</a>
-    </li>
-    <li>
-        <span ss-Post-Date>August 5, 2014</span>
-        <a href="/posts/browser-sync-snippet" title="BrowserSync snippet injector plugin.">BrowserSync snippet injector plugin.</a>
-    </li>
-    <li>
-        <span ss-Post-Date>March 14, 2014</span>
-        <a href="/posts/beginners-guide-to-testing-nodejs-servers" title="Beginners guide to testing NodeJS Servers">Beginners guide to testing NodeJS Servers</a>
-    </li>
-    <li>
-        <span ss-Post-Date>January 25, 2014</span>
-        <a href="/posts/gulpjs-sass-browsersync-ftw" title="GulpJS + SASS + BrowserSync ftw">GulpJS + SASS + BrowserSync ftw</a>
-    </li>
-    <li>
-        <span ss-Post-Date>January 14, 2014</span>
-        <a href="/posts/browsersync-its-getting-a-ui" title="BrowserSync - it&#x27;s getting a UI">BrowserSync - it&#x27;s getting a UI</a>
-    </li>
-    <li>
-        <span ss-Post-Date>November 17, 2013</span>
-        <a href="/posts/testing-angular-directives-with-isolated-scope" title="Testing Angular Directives with Isolated Scope">Testing Angular Directives with Isolated Scope</a>
-    </li>
-    <li>
-        <span ss-Post-Date>November 16, 2013</span>
-        <a href="/posts/making-promises-with-javascript" title="Making Promises with Javascript">Making Promises with Javascript</a>
-    </li>
-    <li>
-        <span ss-Post-Date>November 13, 2013</span>
-        <a href="/posts/function-composition-in-javascript" title="Function Composition in Javascript.">Function Composition in Javascript.</a>
-    </li>
-    <li>
-        <span ss-Post-Date>November 17, 2014</span>
-        <a href="/posts/stylus-less-sass-being-efficient-with-extends" title="Using SASS - Being efficient with @mixin &amp; @extend">Using SASS - Being efficient with @mixin &amp; @extend</a>
-    </li>
-</ul>
-
-</article>
-    </div>
-</main>
+    <main>
+        <div ss-Content>
+            <article>
+                
+                <h1>Posts</h1>
+                <p ss-Post-Meta>
+                    <a href="/categories">Categories</a>
+                </p>
+                <ul ss-Nav="posts">
+                    <li>
+                        <span ss-Post-Date>November 17, 2014</span>
+                        <a href="/posts/simple-network-requests-in-selenium" title="Get a list of network requests in Selenium">Get a list of network requests in Selenium</a>
+                    </li>
+                    <li>
+                        <span ss-Post-Date>August 24, 2014</span>
+                        <a href="/posts/browser-sync-plus-grunt" title="BrowserSync + Grunt - a common problem addressed">BrowserSync + Grunt - a common problem addressed</a>
+                    </li>
+                    <li>
+                        <span ss-Post-Date>August 5, 2014</span>
+                        <a href="/posts/browser-sync-snippet" title="BrowserSync snippet injector plugin.">BrowserSync snippet injector plugin.</a>
+                    </li>
+                    <li>
+                        <span ss-Post-Date>March 14, 2014</span>
+                        <a href="/posts/beginners-guide-to-testing-nodejs-servers" title="Beginners guide to testing NodeJS Servers">Beginners guide to testing NodeJS Servers</a>
+                    </li>
+                    <li>
+                        <span ss-Post-Date>January 25, 2014</span>
+                        <a href="/posts/gulpjs-sass-browsersync-ftw" title="GulpJS + SASS + BrowserSync ftw">GulpJS + SASS + BrowserSync ftw</a>
+                    </li>
+                    <li>
+                        <span ss-Post-Date>January 14, 2014</span>
+                        <a href="/posts/browsersync-its-getting-a-ui" title="BrowserSync - it&#x27;s getting a UI">BrowserSync - it&#x27;s getting a UI</a>
+                    </li>
+                    <li>
+                        <span ss-Post-Date>November 17, 2013</span>
+                        <a href="/posts/testing-angular-directives-with-isolated-scope" title="Testing Angular Directives with Isolated Scope">Testing Angular Directives with Isolated Scope</a>
+                    </li>
+                    <li>
+                        <span ss-Post-Date>November 16, 2013</span>
+                        <a href="/posts/making-promises-with-javascript" title="Making Promises with Javascript">Making Promises with Javascript</a>
+                    </li>
+                    <li>
+                        <span ss-Post-Date>November 13, 2013</span>
+                        <a href="/posts/function-composition-in-javascript" title="Function Composition in Javascript.">Function Composition in Javascript.</a>
+                    </li>
+                    <li>
+                        <span ss-Post-Date>November 22, 2014</span>
+                        <a href="/posts/stylus-less-sass-being-efficient-with-extends" title="Using SASS - Being efficient with @mixin &amp; @extend">Using SASS - Being efficient with @mixin &amp; @extend</a>
+                    </li>
+                </ul>
+            </article>
+        </div>
+    </main>
     <footer ss-Footer>
         <nav ss-Social ss-Nav="footer inline">
             <a href="http://github.com/shakyShane">
@@ -108,7 +123,6 @@
                 <span class="username">shaneosbourne</span>
             </a>
         </nav>
-        
         <p class="text">Building things with Javascript.</p>
     </footer>
 </body>
